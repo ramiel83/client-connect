@@ -9,13 +9,12 @@ namespace DataTransfer
         private static void Main(string[] args)
         {
             using (OleDbConnection accessConnection = ConnectToAccess())
-            using (ClientConnectModelContainer modelContainer = new ClientConnectModelContainer())
             {
-                TransferData(accessConnection, modelContainer);
+                TransferData(accessConnection);
             }
         }
 
-        private static void TransferData(OleDbConnection accessConnection, ClientConnectModelContainer modelContainer)
+        private static void TransferData(OleDbConnection accessConnection)
         {
             using (OleDbCommand oleDbCommand = new OleDbCommand("select * from Switch_DB", accessConnection))
             {
@@ -34,8 +33,11 @@ namespace DataTransfer
                     int? customerId = reader["CustomerID"] as int?;
                     sw.SiteId = customerId != null && customerId == 0 ? null : customerId;
                     sw.Tid = reader.GetString(reader.GetOrdinal("TID"));
-                    modelContainer.SwitchSet.Add(sw);
-                    modelContainer.SaveChanges();
+                    using (ClientConnectModelContainer modelContainer = new ClientConnectModelContainer())
+                    {
+                        modelContainer.SwitchSet.Add(sw);
+                        modelContainer.SaveChanges();
+                    }
 
                     Console.WriteLine("added switch id = {0}", sw.Id);
 
@@ -53,8 +55,11 @@ namespace DataTransfer
                             accessConnection);
                         pbxConnection.ParDataStop = GetParDataStop(reader.GetString(reader.GetOrdinal("Parity")),
                             accessConnection);
-                        modelContainer.PbxConnectionSet.Add(pbxConnection);
-                        modelContainer.SaveChanges();
+                        using (ClientConnectModelContainer modelContainer = new ClientConnectModelContainer())
+                        {
+                            modelContainer.PbxConnectionSet.Add(pbxConnection);
+                            modelContainer.SaveChanges();
+                        }
 
                         Console.WriteLine("added pbx connection for switch id = {0}", sw.Id);
                     }
@@ -67,26 +72,30 @@ namespace DataTransfer
             {
                 OleDbDataReader reader = oleDbCommand.ExecuteReader();
                 while (reader.Read())
-                {
-                    KolanConnection kolanConnection = new KolanConnection();
-                    kolanConnection.SwitchId = int.Parse(reader.GetString(reader.GetOrdinal("SwitchID")));
-                    kolanConnection.DialNum = reader.GetString(reader.GetOrdinal("Area")) +
-                                              reader.GetString(reader.GetOrdinal("DialNum"));
-                    kolanConnection.BaudRate = GetBaudRate(reader.GetString(reader.GetOrdinal("Baudrate")),
-                        accessConnection);
-                    kolanConnection.ParDataStop = GetParDataStop(
-                        reader.GetString(reader.GetOrdinal("Parity")),
-                        accessConnection);
-                    modelContainer.KolanConnectionSet.Add(kolanConnection);
-                    modelContainer.SaveChanges();
+                    try
+                    {
+                        KolanConnection kolanConnection = new KolanConnection();
+                        kolanConnection.SwitchId = int.Parse(reader.GetString(reader.GetOrdinal("SwitchID")));
+                        kolanConnection.DialNum = reader.GetString(reader.GetOrdinal("Area")) +
+                                                  reader.GetString(reader.GetOrdinal("DialNum"));
+                        kolanConnection.BaudRate = GetBaudRate(reader.GetString(reader.GetOrdinal("Baudrate")),
+                            accessConnection);
+                        kolanConnection.ParDataStop = GetParDataStop(
+                            reader.GetString(reader.GetOrdinal("Parity")),
+                            accessConnection);
+                        using (ClientConnectModelContainer modelContainer = new ClientConnectModelContainer())
+                        {
+                            modelContainer.KolanConnectionSet.Add(kolanConnection);
+                            modelContainer.SaveChanges();
+                        }
 
-                    Console.WriteLine("added kolan connection for switch id = {0}",
-                        kolanConnection.SwitchId);
-                }
-
-                // create telnet connection
-
-                // add files
+                        Console.WriteLine("added kolan connection for switch id = {0}",
+                            kolanConnection.SwitchId);
+                    }
+                    catch (Exception ex)
+                    {
+                        Console.WriteLine("exception happened while inserting kolan: " + ex);
+                    }
             }
         }
 
