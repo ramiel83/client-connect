@@ -11,6 +11,7 @@
     <EntitySet Name="KolanConnectionSet" EntityType="ClientConnectModel.Store.KolanConnectionSet" store:Type="Tables" Schema="dbo" />
     <EntitySet Name="TelnetConnectionSet" EntityType="ClientConnectModel.Store.TelnetConnectionSet" store:Type="Tables" Schema="dbo" />
     <EntitySet Name="FileSet" EntityType="ClientConnectModel.Store.FileSet" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="UserSet" EntityType="ClientConnectModel.Store.UserSet" store:Type="Tables" Schema="dbo" />
     <AssociationSet Name="SwitchPbxConnection" Association="ClientConnectModel.Store.SwitchPbxConnection">
       <End Role="Switch" EntitySet="SwitchSet" />
       <End Role="PbxConnection" EntitySet="PbxConnectionSet" />
@@ -78,6 +79,15 @@
     <Property Name="DateTime" Type="datetime" Nullable="false" />
     <Property Name="Content" Type="varbinary(max)" Nullable="false" />
     <Property Name="SwitchId" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="UserSet">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Username" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="PasswordHash" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="AccessLevel" Type="int" Nullable="false" />
   </EntityType>
   <Association Name="SwitchPbxConnection">
     <End Role="Switch" Type="ClientConnectModel.Store.SwitchSet" Multiplicity="1" />
@@ -153,6 +163,7 @@
             <End Role="Switch" EntitySet="SwitchSet" />
             <End Role="File" EntitySet="FileSet" />
           </AssociationSet>
+          <EntitySet Name="UserSet" EntityType="ClientConnectModel.User" />
         </EntityContainer>
         <EntityType Name="Switch">
           <Key>
@@ -261,6 +272,15 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <EntityType Name="User">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Username" Type="String" Nullable="false" />
+          <Property Name="PasswordHash" Type="String" Nullable="false" />
+          <Property Name="AccessLevel" Type="Int32" Nullable="false" />
+        </EntityType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -320,6 +340,16 @@
           <ScalarProperty Name="DateTime" ColumnName="DateTime" />
           <ScalarProperty Name="Content" ColumnName="Content" />
           <ScalarProperty Name="SwitchId" ColumnName="SwitchId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="UserSet">
+      <EntityTypeMapping TypeName="IsTypeOf(ClientConnectModel.User)">
+        <MappingFragment StoreEntitySet="UserSet">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="Username" ColumnName="Username" />
+          <ScalarProperty Name="PasswordHash" ColumnName="PasswordHash" />
+          <ScalarProperty Name="AccessLevel" ColumnName="AccessLevel" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>

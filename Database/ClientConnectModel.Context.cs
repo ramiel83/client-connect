@@ -30,5 +30,6 @@ namespace DataTransfer
         public virtual DbSet<KolanConnection> KolanConnectionSet { get; set; }
         public virtual DbSet<TelnetConnection> TelnetConnectionSet { get; set; }
         public virtual DbSet<File> FileSet { get; set; }
+        public virtual DbSet<User> UserSet { get; set; }
     }
 }

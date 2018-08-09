@@ -2,7 +2,7 @@
 -- --------------------------------------------------
 -- Entity Designer DDL Script for SQL Server 2005, 2008, 2012 and Azure
 -- --------------------------------------------------
--- Date Created: 08/09/2018 18:57:56
+-- Date Created: 08/09/2018 20:26:04
 -- Generated from EDMX file: C:\Users\ramis\Desktop\רמי\תכנות חדש\client-connect\DataTransfer\ClientConnectModel.edmx
 -- --------------------------------------------------
 
@@ -105,6 +105,15 @@ CREATE TABLE [dbo].[FileSet] (
 );
 GO
 
+-- Creating table 'UserSet'
+CREATE TABLE [dbo].[UserSet] (
+    [Id] int IDENTITY(1,1) NOT NULL,
+    [Username] nvarchar(max)  NOT NULL,
+    [PasswordHash] nvarchar(max)  NOT NULL,
+    [AccessLevel] int  NOT NULL
+);
+GO
+
 -- --------------------------------------------------
 -- Creating all PRIMARY KEY constraints
 -- --------------------------------------------------
@@ -136,6 +145,12 @@ GO
 -- Creating primary key on [Id] in table 'FileSet'
 ALTER TABLE [dbo].[FileSet]
 ADD CONSTRAINT [PK_FileSet]
+    PRIMARY KEY CLUSTERED ([Id] ASC);
+GO
+
+-- Creating primary key on [Id] in table 'UserSet'
+ALTER TABLE [dbo].[UserSet]
+ADD CONSTRAINT [PK_UserSet]
     PRIMARY KEY CLUSTERED ([Id] ASC);
 GO
 

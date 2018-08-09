@@ -14,6 +14,7 @@
         <AssociationConnector Association="ClientConnectModel.SwitchTelnetConnection" />
         <EntityTypeShape EntityType="ClientConnectModel.File" Width="1.5" PointX="9" PointY="2.5" />
         <AssociationConnector Association="ClientConnectModel.SwitchFile" />
+        <EntityTypeShape EntityType="ClientConnectModel.User" Width="1.5" PointX="10.375" PointY="5.625" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

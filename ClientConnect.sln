@@ -5,6 +5,10 @@ VisualStudioVersion = 14.0.23107.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataTransfer", "DataTransfer\DataTransfer.csproj", "{ED818881-6904-4D0C-A5FD-42DA06A5F666}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GUI", "GUI\GUI.csproj", "{FA277163-661D-48D1-9DE3-5CF998539114}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Database", "Database\Database.csproj", "{C3CA96E3-04ED-4ED6-81A3-1A4246B3E2E6}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +19,14 @@ Global
 		{ED818881-6904-4D0C-A5FD-42DA06A5F666}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{ED818881-6904-4D0C-A5FD-42DA06A5F666}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{ED818881-6904-4D0C-A5FD-42DA06A5F666}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FA277163-661D-48D1-9DE3-5CF998539114}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FA277163-661D-48D1-9DE3-5CF998539114}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FA277163-661D-48D1-9DE3-5CF998539114}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FA277163-661D-48D1-9DE3-5CF998539114}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C3CA96E3-04ED-4ED6-81A3-1A4246B3E2E6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C3CA96E3-04ED-4ED6-81A3-1A4246B3E2E6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C3CA96E3-04ED-4ED6-81A3-1A4246B3E2E6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C3CA96E3-04ED-4ED6-81A3-1A4246B3E2E6}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

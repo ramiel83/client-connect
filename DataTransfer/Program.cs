@@ -1,6 +1,9 @@
 ﻿using System;
 using System.Configuration;
 using System.Data.OleDb;
+using System.Security.Cryptography;
+using System.Text;
+using Database;
 
 namespace DataTransfer
 {
@@ -96,6 +99,35 @@ namespace DataTransfer
                     {
                         Console.WriteLine("exception happened while inserting kolan: " + ex);
                     }
+            }
+
+            //users
+            using (OleDbCommand oleDbCommand = new OleDbCommand("select * from Passwords", accessConnection))
+            {
+                OleDbDataReader reader = oleDbCommand.ExecuteReader();
+                while (reader.Read())
+                {
+                    User user = new User();
+                    user.Username = reader.GetString(reader.GetOrdinal("Level"));
+                    user.PasswordHash = Utilities.Sha256(reader.GetString(reader.GetOrdinal("Password")));
+                    user.AccessLevel = (int) MapAccessLevel(reader.GetInt16(reader.GetOrdinal("UserLev")));
+                    using (ClientConnectModelContainer modelContainer = new ClientConnectModelContainer())
+                    {
+                        modelContainer.UserSet.Add(user);
+                        modelContainer.SaveChanges();
+                    }
+
+                    Console.WriteLine("added user: " + user.Username);
+                }
+            }
+        }
+
+        private static AccessLevel MapAccessLevel(int accessLevel)
+        {
+            switch (accessLevel)
+            {
+                case 10: return AccessLevel.Administrator;
+                default: return AccessLevel.Technician;
             }
         }
 
