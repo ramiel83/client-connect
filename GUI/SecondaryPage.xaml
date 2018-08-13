@@ -7,7 +7,7 @@
       mc:Ignorable="d" 
       Title="SecondaryPage" Height="400" Width="600" FlowDirection="RightToLeft">
 
-    <Grid>
+    <Grid HorizontalAlignment="Left" Width="600">
         <Grid.Background>
             <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
                 <GradientStop Color="Black" Offset="0"/>
@@ -22,8 +22,8 @@
                 </LinearGradientBrush>
             </Label.Background>
         </Label>
-        <ListBox x:Name="CustomerList_Box" Margin="10,62,368,26"/>
-        <Button x:Name="DailPbx_Button" Content="חיוג למרכזייה" Margin="440,88,48,262" Click="DailPbx_Click" FontSize="14" FontFamily="Segoe UI Black">
+        <ListBox x:Name="CustomerList_Box" Margin="10,60,300,28"/>
+        <Button x:Name="DailPbx_Button" Content="חיוג למרכזייה" Margin="462,88,26,262" Click="DialPbx_Click" FontSize="14" FontFamily="Segoe UI Black">
             <Button.Background>
                 <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
                     <GradientStop Color="Black" Offset="0"/>
@@ -37,7 +37,7 @@
                 </LinearGradientBrush>
             </Button.BorderBrush>
         </Button>
-        <Button x:Name="DailKolan_Button" Content="חיוג לקולן" Margin="280,88,208,262" Click="DailKolan_Click" FontSize="14" FontFamily="Segoe UI Black">
+        <Button x:Name="DailKolan_Button" Content="חיוג לקולן" Margin="325,88,163,262" Click="DialKolan_Click" FontSize="14" FontFamily="Segoe UI Black">
             <Button.Background>
                 <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
                     <GradientStop Color="Black" Offset="0"/>
@@ -45,7 +45,7 @@
                 </LinearGradientBrush>
             </Button.Background>
         </Button>
-        <Button x:Name="TelnetConnect_Button" Content="התחבר בטלנט" Margin="440,187,48,163" Height="50" FontSize="14" FontFamily="Segoe UI Black" Click="ConnectPbxInTelnet_Click" RenderTransformOrigin="0.355,1.226">
+        <Button x:Name="TelnetConnect_Button" Content="התחבר בטלנט" Margin="464,187,26,163" Height="50" FontSize="14" FontFamily="Segoe UI Black" Click="ConnectPbxInTelnet_Click" RenderTransformOrigin="0.355,1.226">
             <Button.Background>
                 <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
                     <GradientStop Color="Black" Offset="0"/>
@@ -53,7 +53,7 @@
                 </LinearGradientBrush>
             </Button.Background>
         </Button>
-        <Button x:Name="ClientConnect_Button" Content="התחברות לרשת" Margin="280,188,208,162"  Height="50" FontFamily="Segoe UI Black" Click="ConnectClientNetwork_Click">
+        <Button x:Name="ClientConnect_Button" Content="התחברות לרשת" Margin="327,188,163,162"  Height="50" FontFamily="Segoe UI Black" Click="ConnectClientNetwork_Click">
             <Button.Background>
                 <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
                     <GradientStop Color="Black" Offset="0"/>
@@ -67,7 +67,7 @@
                 </LinearGradientBrush>
             </Button.BorderBrush>
         </Button>
-        <Button x:Name="Edit_Button" Content="עריכה" Margin="440,288,48,0" VerticalAlignment="Top"  Height="50" FontSize="14" FontFamily="Segoe UI Black" Click="Edit_Click">
+        <Button x:Name="Edit_Button" Content="עריכה" Margin="462,288,26,0" VerticalAlignment="Top"  Height="50" FontSize="14" FontFamily="Segoe UI Black" Click="Edit_Click">
             <Button.Background>
                 <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
                     <GradientStop Color="Black" Offset="0"/>
@@ -75,7 +75,7 @@
                 </LinearGradientBrush>
             </Button.Background>
         </Button>
-        <Button x:Name="Management_Button" Content="ניהול" Margin="280,288,208,62" FontSize="14" FontFamily="Segoe UI Black" Click="Management_Click" RenderTransformOrigin="0.565,0.08">
+        <Button x:Name="Management_Button" Content="ניהול" Margin="325,288,163,62" FontSize="14" FontFamily="Segoe UI Black" Click="Management_Click" RenderTransformOrigin="0.565,0.08">
             <Button.Background>
                 <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
                     <GradientStop Color="Black" Offset="0"/>
@@ -83,6 +83,6 @@
                 </LinearGradientBrush>
             </Button.Background>
         </Button>
-        <ComboBox x:Name="Search_ComboBox" HorizontalAlignment="Left"  Margin="10,32,0,0" VerticalAlignment="Top" Width="222" Height="23" SelectionChanged="Search_ComboBox_SelectionChanged"/>
+        <TextBox x:Name="Search_TextBox"  Margin="10,32,300,0" VerticalAlignment="Top" Height="23" KeyUp="Search_TextBox_KeyUp"/>
     </Grid>
 </Page>
