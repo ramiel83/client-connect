@@ -18,6 +18,7 @@ namespace Database
         public System.DateTime DateTime { get; set; }
         public byte[] Content { get; set; }
         public int SwitchId { get; set; }
+        public string Name { get; set; }
     
         public virtual Switch Switch { get; set; }
     }

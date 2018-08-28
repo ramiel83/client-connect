@@ -1,8 +1,13 @@
 ﻿using System;
 using System.Data.Entity.Validation;
+using System.IO;
+using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Input;
 using Database;
+using Microsoft.Win32;
+using File = Database.File;
 
 namespace GUI
 {
@@ -11,53 +16,61 @@ namespace GUI
     /// </summary>
     public partial class EditPage : Page
     {
-        private readonly Switch _switchToEdit;
+        private readonly int? _switchIdToEdit;
 
-        public EditPage(Switch switchToEdit)
+        public EditPage(int? switchIdToEdit)
         {
-            _switchToEdit = switchToEdit;
+            _switchIdToEdit = switchIdToEdit;
 
             InitializeComponent();
 
-            if (!IsNewSwitch) ManufacturingNumber_Box.Text = _switchToEdit.Id.ToString();
+            if (IsNewSwitch) return;
 
-            CustomerNum_Box.Text = _switchToEdit.CrmNum;
-            Comments_Box.Text = _switchToEdit.Comments;
-            CustomerName_Box.Text = _switchToEdit.Name;
-            Release_ComboBox.Text = _switchToEdit.SwRelease;
-            MachineType_ComboBox.Text = _switchToEdit.MachineType;
-
-            PbxConnection allPbxData = _switchToEdit.PbxConnection;
-            if (allPbxData != null)
+            using (ClientConnectModelContainer modelContainer = new ClientConnectModelContainer())
             {
-                PbxPhoneNumber_Box.Text = allPbxData.DialNum;
-                PbxUserName_Box.Text = allPbxData.LoginName;
-                PbxPass_Box.Text = allPbxData.LoginPassword;
-                PbxBoudrate_ComboBox.Text = allPbxData.BaudRate.ToString();
-                PbxDebugPass_Box.Text = allPbxData.DebugPassword;
-                PbxParDataStop_ComboBox.Text = allPbxData.ParDataStop;
-            }
+                Switch switchToEdit = modelContainer.SwitchSet.Single(x => x.Id == _switchIdToEdit);
+                ManufacturingNumber_Box.Text = _switchIdToEdit.ToString();
 
-            KolanConnection allKolanData = _switchToEdit.KolanConnection;
-            if (allKolanData != null)
-            {
-                KolanPhoneNumber_Box.Text = allKolanData.DialNum;
-                KolanBoudrate_ComboBox.Text = allKolanData.BaudRate.ToString();
-                KolanParDataStop_ComboBox.Text = allKolanData.ParDataStop;
-            }
+                CustomerNum_Box.Text = switchToEdit.CrmNum;
+                Comments_Box.Text = switchToEdit.Comments;
+                CustomerName_Box.Text = switchToEdit.Name;
+                Release_ComboBox.Text = switchToEdit.SwRelease;
+                MachineType_ComboBox.Text = switchToEdit.MachineType;
 
-            TelnetConnection allTelnetData = _switchToEdit.TelnetConnection;
-            if (allTelnetData != null)
-            {
-                TelnetAddress_Box.Text = allTelnetData.IpAddress;
-                TelnetUserNameCS_Box.Text = allTelnetData.UserNameCS;
-                TelnetPassCS_Box.Text = allTelnetData.PasswordCS;
-                TelnetUserNameSS_Box.Text = allTelnetData.UserNameSS;
-                TelnetPasswordSS_Box.Text = allTelnetData.PasswordSS;
+                PbxConnection allPbxData = switchToEdit.PbxConnection;
+                if (allPbxData != null)
+                {
+                    PbxPhoneNumber_Box.Text = allPbxData.DialNum;
+                    PbxUserName_Box.Text = allPbxData.LoginName;
+                    PbxPass_Box.Text = allPbxData.LoginPassword;
+                    PbxBoudrate_ComboBox.Text = allPbxData.BaudRate.ToString();
+                    PbxDebugPass_Box.Text = allPbxData.DebugPassword;
+                    PbxParDataStop_ComboBox.Text = allPbxData.ParDataStop;
+                }
+
+                KolanConnection allKolanData = switchToEdit.KolanConnection;
+                if (allKolanData != null)
+                {
+                    KolanPhoneNumber_Box.Text = allKolanData.DialNum;
+                    KolanBoudrate_ComboBox.Text = allKolanData.BaudRate.ToString();
+                    KolanParDataStop_ComboBox.Text = allKolanData.ParDataStop;
+                }
+
+                TelnetConnection allTelnetData = switchToEdit.TelnetConnection;
+                if (allTelnetData != null)
+                {
+                    TelnetAddress_Box.Text = allTelnetData.IpAddress;
+                    TelnetUserNameCS_Box.Text = allTelnetData.UserNameCS;
+                    TelnetPassCS_Box.Text = allTelnetData.PasswordCS;
+                    TelnetUserNameSS_Box.Text = allTelnetData.UserNameSS;
+                    TelnetPasswordSS_Box.Text = allTelnetData.PasswordSS;
+                }
+
+                RefreshFilesList();
             }
         }
 
-        private bool IsNewSwitch => _switchToEdit.Id == 0;
+        private bool IsNewSwitch => _switchIdToEdit == null;
 
         private void Ok_Click(object sender, RoutedEventArgs e)
         {
@@ -81,23 +94,32 @@ namespace GUI
             {
                 try
                 {
-                    if (IsNewSwitch) modelContainer.SwitchSet.Add(_switchToEdit);
+                    Switch switchToEdit = null;
+                    if (IsNewSwitch)
+                    {
+                        switchToEdit = new Switch();
+                        modelContainer.SwitchSet.Add(switchToEdit);
+                    }
+                    else
+                    {
+                        switchToEdit = modelContainer.SwitchSet.Single(x => x.Id == _switchIdToEdit);
+                    }
 
-                    _switchToEdit.Name = CustomerName_Box.Text;
-                    _switchToEdit.CrmNum = CustomerNum_Box.Text;
-                    _switchToEdit.Id = parsedSwitchId;
-                    _switchToEdit.MachineType = MachineType_ComboBox.Text;
-                    _switchToEdit.SwRelease = Release_ComboBox.Text;
-                    _switchToEdit.Comments = Comments_Box.Text;
-                    modelContainer
-                        .SaveChanges(); // add the switch if necessary, because all the connections depend on it
+                    switchToEdit.Name = CustomerName_Box.Text;
+                    switchToEdit.CrmNum = CustomerNum_Box.Text;
+                    switchToEdit.Id = parsedSwitchId;
+                    switchToEdit.MachineType = MachineType_ComboBox.Text;
+                    switchToEdit.SwRelease = Release_ComboBox.Text;
+                    switchToEdit.Comments = Comments_Box.Text;
+                    // add the switch if necessary, because all the connections depend on it
+                    modelContainer.SaveChanges();
 
-                    PbxConnection pbxEditData = _switchToEdit.PbxConnection;
+                    PbxConnection pbxEditData = switchToEdit.PbxConnection;
                     bool newPbxConnection = false;
                     if (pbxEditData == null)
                     {
                         pbxEditData = new PbxConnection();
-                        pbxEditData.SwitchId = _switchToEdit.Id;
+                        pbxEditData.SwitchId = switchToEdit.Id;
                         modelContainer.PbxConnectionSet.Add(pbxEditData);
                     }
 
@@ -110,11 +132,11 @@ namespace GUI
                     pbxEditData.DebugPassword = PbxDebugPass_Box.Text;
                     pbxEditData.ParDataStop = PbxParDataStop_ComboBox.Text;
 
-                    KolanConnection kolanEditData = _switchToEdit.KolanConnection;
+                    KolanConnection kolanEditData = switchToEdit.KolanConnection;
                     if (kolanEditData == null)
                     {
                         kolanEditData = new KolanConnection();
-                        kolanEditData.SwitchId = _switchToEdit.Id;
+                        kolanEditData.SwitchId = switchToEdit.Id;
                         modelContainer.KolanConnectionSet.Add(kolanEditData);
                     }
 
@@ -124,11 +146,11 @@ namespace GUI
                         kolanEditData.BaudRate = parsedKolanBaudRate;
                     kolanEditData.ParDataStop = KolanParDataStop_ComboBox.Text;
 
-                    TelnetConnection telnetEditData = _switchToEdit.TelnetConnection;
+                    TelnetConnection telnetEditData = switchToEdit.TelnetConnection;
                     if (telnetEditData == null)
                     {
                         telnetEditData = new TelnetConnection();
-                        telnetEditData.SwitchId = _switchToEdit.Id;
+                        telnetEditData.SwitchId = switchToEdit.Id;
                         modelContainer.TelnetConnectionSet.Add(telnetEditData);
                     }
 
@@ -177,6 +199,74 @@ namespace GUI
         {
             SecondaryPage sp = new SecondaryPage();
             Content = new Frame {Content = sp};
+        }
+
+        private void addFileButton_Click(object sender, RoutedEventArgs e)
+        {
+            OpenFileDialog openFileDialog = new OpenFileDialog();
+            openFileDialog.Multiselect = false;
+            if (openFileDialog.ShowDialog() != true) return;
+
+            File newFile = new File();
+            newFile.SwitchId = (int) _switchIdToEdit;
+            newFile.DateTime = DateTime.Now;
+            newFile.Content = System.IO.File.ReadAllBytes(openFileDialog.FileName);
+            string newFileName = new FileInfo(openFileDialog.FileName).Name;
+            newFile.Name = newFileName;
+            using (ClientConnectModelContainer modelContainer = new ClientConnectModelContainer())
+            {
+                modelContainer.FileSet.Add(newFile);
+                modelContainer.SaveChanges();
+            }
+
+            RefreshFilesList();
+        }
+
+        private void RefreshFilesList()
+        {
+            FileListBox.Items.Clear();
+            using (ClientConnectModelContainer modelContainer = new ClientConnectModelContainer())
+            {
+                Switch switchToEdit = modelContainer.SwitchSet.Single(x => x.Id == _switchIdToEdit);
+
+                foreach (File file in switchToEdit.File)
+                {
+                    ListBoxItem item = new ListBoxItem();
+                    item.MouseDoubleClick += FileMouseDoubleClick;
+                    item.Content = file.Name;
+                    item.Tag = file.Id;
+                    FileListBox.Items.Add(item);
+                }
+            }
+        }
+
+        private void FileMouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            using (ClientConnectModelContainer modelContainer = new ClientConnectModelContainer())
+            {
+                int selectedFileId = int.Parse(((ListBoxItem) FileListBox.SelectedItems[0]).Tag.ToString());
+                File file = modelContainer.FileSet.Single(x => x.Id == selectedFileId);
+
+            }
+        }
+
+        private void deleteFileButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (FileListBox.SelectedItems.Count == 0)
+            {
+                MessageBox.Show("לא נבחר אף קובץ", "בחר קובץ", MessageBoxButton.OK, MessageBoxImage.Exclamation);
+                return;
+            }
+
+            using (ClientConnectModelContainer modelContainer = new ClientConnectModelContainer())
+            {
+                int selectedFileId = int.Parse(((ListBoxItem) FileListBox.SelectedItems[0]).Tag.ToString());
+                File file = modelContainer.FileSet.Single(x => x.Id == selectedFileId);
+                modelContainer.FileSet.Remove(file);
+                modelContainer.SaveChanges();
+            }
+
+            RefreshFilesList();
         }
     }
 }

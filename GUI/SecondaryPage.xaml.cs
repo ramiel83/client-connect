@@ -52,13 +52,9 @@ namespace GUI
             string[] selectedCustomerArr = switchIdString.Split(' ');
             int switchId = int.Parse(selectedCustomerArr[0]);
 
-            using (ClientConnectModelContainer modelContainer = new ClientConnectModelContainer())
-            {
-                Switch selectedSwitch = modelContainer.SwitchSet.Single(sw => sw.Id == switchId);
-                EditPage ep = new EditPage(selectedSwitch);
-                //over between some page
-                Content = new Frame {Content = ep};
-            }
+            EditPage ep = new EditPage(switchId);
+            //over between some page
+            Content = new Frame {Content = ep};
         }
 
         private void DialPbx_Click(object sender, RoutedEventArgs e)
@@ -136,6 +132,8 @@ namespace GUI
             catch (Exception ex)
             {
             }
+
+            Application.Current.MainWindow.WindowState = WindowState.Minimized;
         }
 
         private string WriteScript(string dialNum, string loginName, string loginPassword, long baudRate, int parity,
@@ -181,6 +179,8 @@ namespace GUI
             catch (Exception ex)
             {
             }
+
+            Application.Current.MainWindow.WindowState = WindowState.Minimized;
         }
 
         private string WriteKolanScript(string dialNum, long baudRate)
@@ -237,6 +237,8 @@ namespace GUI
             catch (Exception ex)
             {
             }
+
+            Application.Current.MainWindow.WindowState = WindowState.Minimized;
         }
 
         //  private string WriteTelnetScript(string ipAdress, string siganlServerLogi, string siganlServerPass, string callServerLogi, string callServerPass)
@@ -282,19 +284,15 @@ namespace GUI
                 return;
             }
 
-            using (ClientConnectModelContainer modelContainer = new ClientConnectModelContainer())
+            try
             {
-                try
-                {
-                    Switch newSwitch = new Switch();
-                    EditPage ep = new EditPage(newSwitch);
-                    Content = new Frame {Content = ep};
-                }
-                catch (Exception exception)
-                {
-                    MessageBox.Show("לא ניתן להוסיף לקוח זה פנה למנהל המערכת");
-                    // throw;
-                }
+                EditPage ep = new EditPage(null);
+                Content = new Frame {Content = ep};
+            }
+            catch (Exception exception)
+            {
+                MessageBox.Show("לא ניתן להוסיף לקוח זה פנה למנהל המערכת");
+                // throw;
             }
         }
     }

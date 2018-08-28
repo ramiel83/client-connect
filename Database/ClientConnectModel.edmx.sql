@@ -2,7 +2,7 @@
 -- --------------------------------------------------
 -- Entity Designer DDL Script for SQL Server 2005, 2008, 2012 and Azure
 -- --------------------------------------------------
--- Date Created: 08/28/2018 20:22:42
+-- Date Created: 08/28/2018 21:28:25
 -- Generated from EDMX file: C:\Users\ramis\Desktop\rami\new_programming\client-connect\Database\ClientConnectModel.edmx
 -- --------------------------------------------------
 
@@ -107,7 +107,8 @@ CREATE TABLE [dbo].[FileSet] (
     [Id] int IDENTITY(1,1) NOT NULL,
     [DateTime] datetime  NOT NULL,
     [Content] varbinary(max)  NOT NULL,
-    [SwitchId] int  NOT NULL
+    [SwitchId] int  NOT NULL,
+    [Name] nvarchar(max)  NOT NULL
 );
 GO
 

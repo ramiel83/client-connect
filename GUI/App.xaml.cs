@@ -11,5 +11,11 @@ namespace GUI
         {
             ProcommProcess.RunInstance();
         }
+
+        protected override void OnExit(ExitEventArgs e)
+        {
+            if (ProcommProcess.Instance != null) ProcommProcess.Instance.Kill();
+            base.OnExit(e);
+        }
     }
 }

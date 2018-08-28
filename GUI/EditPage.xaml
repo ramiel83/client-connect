@@ -136,7 +136,6 @@
 
         <TextBox x:Name="Comments_Box" Margin="409,248,13,37" TextWrapping="Wrap" />
         <Label x:Name="PbxParDataStop_Label" Content="par-data-stop" Margin="114,132,402,0" VerticalAlignment="Top" />
-        <TextBox x:Name="AttachFile_Box" Margin="408,86,13,180" TextWrapping="Wrap" Text="" />
         <Label x:Name="NetworkDetails_Label" Content="פרטי חיבור לרשת " Margin="248,64,243,0" VerticalAlignment="Top"
                FontFamily="Segoe UI Black" />
         <Label x:Name="PbxDetails_Label" Content="פרטי חיוג למרכזייה" Margin="55,64,423,0" VerticalAlignment="Top"
@@ -190,12 +189,18 @@
                  VerticalAlignment="Top" />
         <Label x:Name="AttachFile_Label" Content="צרוף קבצים " Margin="459,64,62,0" VerticalAlignment="Top"
                RenderTransformOrigin="0.631,0.346" FontFamily="Segoe UI Black" />
-        <Border BorderBrush="Black" BorderThickness="1" Margin="6,226,402,29" RenderTransformOrigin="-1.711,0.03" />
-        <Border BorderBrush="Black" BorderThickness="1" Margin="6,70,402,172" RenderTransformOrigin="-1.711,0.03" />
-        <Border BorderBrush="Black" BorderThickness="1" Margin="402,70,6,172" RenderTransformOrigin="-1.711,0.03" />
-        <Border BorderBrush="Black" BorderThickness="1" Margin="205,226,205,29" RenderTransformOrigin="-1.711,0.03" />
-        <Border BorderBrush="Black" BorderThickness="1" Margin="402,226,6,29" RenderTransformOrigin="-1.711,0.03" />
-        <Border BorderBrush="Black" BorderThickness="1" Margin="205,70,205,172" RenderTransformOrigin="-1.711,0.03" />
+        <Border BorderBrush="Black" BorderThickness="1" Margin="6,226,402,29" RenderTransformOrigin="-1.711,0.03" Panel.ZIndex="-5" />
+        <Border BorderBrush="Black" BorderThickness="1" Margin="6,70,402,172" RenderTransformOrigin="-1.711,0.03" Panel.ZIndex="-5" />
+        <Border BorderBrush="Black" BorderThickness="1" Margin="402,70,6,172" RenderTransformOrigin="-1.711,0.03" Panel.ZIndex="-5" >
+            <Grid>
+                <ListBox x:Name="FileListBox" HorizontalAlignment="Left" Height="105" Margin="10,19,0,0" VerticalAlignment="Top" Width="170"/>
+                <Button x:Name="addFileButton" Content="הוסף קובץ" HorizontalAlignment="Left" Margin="90,129,0,0" VerticalAlignment="Top" Width="90" Click="addFileButton_Click"/>
+                <Button x:Name="deleteFileButton" Content="מחק קובץ" HorizontalAlignment="Left" Margin="10,129,0,0" VerticalAlignment="Top" Width="75" Click="deleteFileButton_Click"/>
+            </Grid>
+        </Border>
+        <Border BorderBrush="Black" BorderThickness="1" Margin="205,226,205,29" RenderTransformOrigin="-1.711,0.03" Panel.ZIndex="-5" />
+        <Border BorderBrush="Black" BorderThickness="1" Margin="402,226,6,29" RenderTransformOrigin="-1.711,0.03" Panel.ZIndex="-5" />
+        <Border BorderBrush="Black" BorderThickness="1" Margin="205,70,205,172" RenderTransformOrigin="-1.711,0.03" Panel.ZIndex="-5" />
 
         <ComboBox x:Name="KolanBoudrate_ComboBox" HorizontalAlignment="Left" Margin="12,274,0,0"
                   VerticalAlignment="Top" Width="103" Height="23">
