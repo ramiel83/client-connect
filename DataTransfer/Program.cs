@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Configuration;
 using System.Data.OleDb;
-using System.Security.Cryptography;
-using System.Text;
 using Database;
 
 namespace DataTransfer

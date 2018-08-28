@@ -7,7 +7,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace DataTransfer
+namespace Database
 {
     using System;
     using System.Collections.Generic;

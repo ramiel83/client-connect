@@ -2,8 +2,8 @@
 -- --------------------------------------------------
 -- Entity Designer DDL Script for SQL Server 2005, 2008, 2012 and Azure
 -- --------------------------------------------------
--- Date Created: 08/28/2018 20:22:42
--- Generated from EDMX file: C:\Users\ramis\Desktop\rami\new_programming\client-connect\Database\ClientConnectModel.edmx
+-- Date Created: 07/30/2018 21:00:53
+-- Generated from EDMX file: C:\Users\ramis\Desktop\רמי\תכנות חדש\client-connect\DataTransfer\ClientConnectModel.edmx
 -- --------------------------------------------------
 
 SET QUOTED_IDENTIFIER OFF;
@@ -49,9 +49,6 @@ GO
 IF OBJECT_ID(N'[dbo].[FileSet]', 'U') IS NOT NULL
     DROP TABLE [dbo].[FileSet];
 GO
-IF OBJECT_ID(N'[dbo].[UserSet]', 'U') IS NOT NULL
-    DROP TABLE [dbo].[UserSet];
-GO
 
 -- --------------------------------------------------
 -- Creating all tables
@@ -95,10 +92,7 @@ GO
 CREATE TABLE [dbo].[TelnetConnectionSet] (
     [SwitchId] int  NOT NULL,
     [IpAddress] nvarchar(max)  NOT NULL,
-    [UserNameSS] nvarchar(max)  NOT NULL,
-    [PasswordSS] nvarchar(max)  NOT NULL,
-    [UserNameCS] nvarchar(max)  NOT NULL,
-    [PasswordCS] nvarchar(max)  NOT NULL
+    [Script] nvarchar(max)  NOT NULL
 );
 GO
 
@@ -108,15 +102,6 @@ CREATE TABLE [dbo].[FileSet] (
     [DateTime] datetime  NOT NULL,
     [Content] varbinary(max)  NOT NULL,
     [SwitchId] int  NOT NULL
-);
-GO
-
--- Creating table 'UserSet'
-CREATE TABLE [dbo].[UserSet] (
-    [Id] int IDENTITY(1,1) NOT NULL,
-    [Username] nvarchar(max)  NOT NULL,
-    [PasswordHash] nvarchar(max)  NOT NULL,
-    [AccessLevel] int  NOT NULL
 );
 GO
 
@@ -151,12 +136,6 @@ GO
 -- Creating primary key on [Id] in table 'FileSet'
 ALTER TABLE [dbo].[FileSet]
 ADD CONSTRAINT [PK_FileSet]
-    PRIMARY KEY CLUSTERED ([Id] ASC);
-GO
-
--- Creating primary key on [Id] in table 'UserSet'
-ALTER TABLE [dbo].[UserSet]
-ADD CONSTRAINT [PK_UserSet]
     PRIMARY KEY CLUSTERED ([Id] ASC);
 GO
 

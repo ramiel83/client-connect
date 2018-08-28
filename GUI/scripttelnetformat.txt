@@ -1,0 +1,31 @@
+
+proc main
+
+string ip= "{0}"
+    connectmanual TELNET ip
+   ; connectmanual TELNET "172.16.2.3"
+    while $DIALING
+    yield
+    endwhile
+    pause 0
+ 
+    waitfor "logi"
+ 	;transmit "{0}"
+	transmit "isaacs^M"
+	waitfor "Pass"
+	;transmit "{0}"
+	transmit "isaacs"
+	transmit "^M"
+	waitfor "]$"
+	transmit "cslogin^M"
+    waitfor "ing^M"
+    transmit "^M"
+    transmit "^M"
+    waitfor ">"
+    ;transmit "logi "{0}"^M"
+    transmit "logi isaacs^M"
+    waitfor "PASS"
+    ;transmit "{0}^M"
+    transmit "isaacs^M"
+       
+endproc

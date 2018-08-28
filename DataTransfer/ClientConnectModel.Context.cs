@@ -7,7 +7,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Database
+namespace DataTransfer
 {
     using System;
     using System.Data.Entity;
@@ -30,6 +30,5 @@ namespace Database
         public virtual DbSet<KolanConnection> KolanConnectionSet { get; set; }
         public virtual DbSet<TelnetConnection> TelnetConnectionSet { get; set; }
         public virtual DbSet<File> FileSet { get; set; }
-        public virtual DbSet<User> UserSet { get; set; }
     }
 }

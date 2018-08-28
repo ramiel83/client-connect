@@ -1,7 +1,6 @@
 ﻿using System.Linq;
 using System.Windows;
 using Database;
-using DataTransfer;
 
 namespace GUI
 {
@@ -15,6 +14,8 @@ namespace GUI
             InitializeComponent();
         }
 
+        public static AccessLevel UserAccessLevel { get; private set; }
+
         private void login_Click(object sender, RoutedEventArgs e)
         {
             using (ClientConnectModelContainer modelContainer = new ClientConnectModelContainer())
@@ -26,12 +27,12 @@ namespace GUI
                     u.Username == username && u.PasswordHash == passwordHash);
                 if (user != null)
                 {
-                    MessageBox.Show("ברוך הבא " + user.Username, "כניסה למערכת", MessageBoxButton.OK,
-                        MessageBoxImage.Information);
+                    UserAccessLevel = (AccessLevel) user.AccessLevel;
                     SecondaryPage sp = new SecondaryPage();
                     Content = sp;
                 }
                 else
+
                 {
                     MessageBox.Show("שגיאה בכניסה למערכת -בדוק את שם המשתמש ו\\או הסיסמא.", "שגיאה בכניסה למערכת",
                         MessageBoxButton.OK, MessageBoxImage.Error);

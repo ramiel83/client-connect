@@ -7,19 +7,17 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Database
+namespace DataTransfer
 {
     using System;
     using System.Collections.Generic;
     
-    public partial class TelnetConnection
+    public partial class File
     {
+        public int Id { get; set; }
+        public System.DateTime DateTime { get; set; }
+        public byte[] Content { get; set; }
         public int SwitchId { get; set; }
-        public string IpAddress { get; set; }
-        public string UserNameSS { get; set; }
-        public string PasswordSS { get; set; }
-        public string UserNameCS { get; set; }
-        public string PasswordCS { get; set; }
     
         public virtual Switch Switch { get; set; }
     }

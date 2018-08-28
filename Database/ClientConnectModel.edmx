@@ -1,146 +1,162 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
+
 <edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
   <!-- EF Runtime content -->
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-    <Schema Namespace="ClientConnectModel.Store" Alias="Self" Provider="System.Data.SqlClient" ProviderManifestToken="2012" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
-  <EntityContainer Name="ClientConnectModelStoreContainer">
-    <EntitySet Name="SwitchSet" EntityType="ClientConnectModel.Store.SwitchSet" store:Type="Tables" Schema="dbo" />
-    <EntitySet Name="PbxConnectionSet" EntityType="ClientConnectModel.Store.PbxConnectionSet" store:Type="Tables" Schema="dbo" />
-    <EntitySet Name="KolanConnectionSet" EntityType="ClientConnectModel.Store.KolanConnectionSet" store:Type="Tables" Schema="dbo" />
-    <EntitySet Name="TelnetConnectionSet" EntityType="ClientConnectModel.Store.TelnetConnectionSet" store:Type="Tables" Schema="dbo" />
-    <EntitySet Name="FileSet" EntityType="ClientConnectModel.Store.FileSet" store:Type="Tables" Schema="dbo" />
-    <EntitySet Name="UserSet" EntityType="ClientConnectModel.Store.UserSet" store:Type="Tables" Schema="dbo" />
-    <AssociationSet Name="SwitchPbxConnection" Association="ClientConnectModel.Store.SwitchPbxConnection">
-      <End Role="Switch" EntitySet="SwitchSet" />
-      <End Role="PbxConnection" EntitySet="PbxConnectionSet" />
-    </AssociationSet>
-    <AssociationSet Name="KolanConnectionSwitch" Association="ClientConnectModel.Store.KolanConnectionSwitch">
-      <End Role="KolanConnection" EntitySet="KolanConnectionSet" />
-      <End Role="Switch" EntitySet="SwitchSet" />
-    </AssociationSet>
-    <AssociationSet Name="SwitchTelnetConnection" Association="ClientConnectModel.Store.SwitchTelnetConnection">
-      <End Role="Switch" EntitySet="SwitchSet" />
-      <End Role="TelnetConnection" EntitySet="TelnetConnectionSet" />
-    </AssociationSet>
-    <AssociationSet Name="SwitchFile" Association="ClientConnectModel.Store.SwitchFile">
-      <End Role="Switch" EntitySet="SwitchSet" />
-      <End Role="File" EntitySet="FileSet" />
-    </AssociationSet>
-  </EntityContainer>
-  <EntityType Name="SwitchSet">
-    <Key>
-      <PropertyRef Name="Id" />
-    </Key>
-    <Property Name="Id" Type="int" Nullable="false" />
-    <Property Name="CrmNum" Type="nvarchar(max)" Nullable="true" />
-    <Property Name="Comments" Type="nvarchar(max)" Nullable="true" />
-    <Property Name="Name" Type="nvarchar(max)" Nullable="false" />
-    <Property Name="SwRelease" Type="nvarchar(max)" Nullable="true" />
-    <Property Name="MachineType" Type="nvarchar(max)" Nullable="true" />
-    <Property Name="SiteId" Type="int" Nullable="true" />
-    <Property Name="Tid" Type="nvarchar(max)" Nullable="true" />
-  </EntityType>
-  <EntityType Name="PbxConnectionSet">
-    <Key>
-      <PropertyRef Name="SwitchId" />
-    </Key>
-    <Property Name="SwitchId" Type="int" Nullable="false" />
-    <Property Name="DialNum" Type="nvarchar(max)" Nullable="false" />
-    <Property Name="LoginName" Type="nvarchar(max)" Nullable="true" />
-    <Property Name="LoginPassword" Type="nvarchar(max)" Nullable="false" />
-    <Property Name="DebugPassword" Type="nvarchar(max)" Nullable="true" />
-    <Property Name="BaudRate" Type="int" Nullable="false" />
-    <Property Name="ParDataStop" Type="nvarchar(max)" Nullable="false" />
-  </EntityType>
-  <EntityType Name="KolanConnectionSet">
-    <Key>
-      <PropertyRef Name="SwitchId" />
-    </Key>
-    <Property Name="SwitchId" Type="int" Nullable="false" />
-    <Property Name="DialNum" Type="nvarchar(max)" Nullable="false" />
-    <Property Name="BaudRate" Type="int" Nullable="false" />
-    <Property Name="ParDataStop" Type="nvarchar(max)" Nullable="false" />
-  </EntityType>
-  <EntityType Name="TelnetConnectionSet">
-    <Key>
-      <PropertyRef Name="SwitchId" />
-    </Key>
-    <Property Name="SwitchId" Type="int" Nullable="false" />
-    <Property Name="IpAddress" Type="nvarchar(max)" Nullable="false" />
-    <Property Name="Script" Type="nvarchar(max)" Nullable="false" />
-  </EntityType>
-  <EntityType Name="FileSet">
-    <Key>
-      <PropertyRef Name="Id" />
-    </Key>
-    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-    <Property Name="DateTime" Type="datetime" Nullable="false" />
-    <Property Name="Content" Type="varbinary(max)" Nullable="false" />
-    <Property Name="SwitchId" Type="int" Nullable="false" />
-  </EntityType>
-  <EntityType Name="UserSet">
-    <Key>
-      <PropertyRef Name="Id" />
-    </Key>
-    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-    <Property Name="Username" Type="nvarchar(max)" Nullable="false" />
-    <Property Name="PasswordHash" Type="nvarchar(max)" Nullable="false" />
-    <Property Name="AccessLevel" Type="int" Nullable="false" />
-  </EntityType>
-  <Association Name="SwitchPbxConnection">
-    <End Role="Switch" Type="ClientConnectModel.Store.SwitchSet" Multiplicity="1" />
-    <End Role="PbxConnection" Type="ClientConnectModel.Store.PbxConnectionSet" Multiplicity="0..1" />
-    <ReferentialConstraint>
-      <Principal Role="Switch">
-        <PropertyRef Name="Id" />
-      </Principal>
-      <Dependent Role="PbxConnection">
-        <PropertyRef Name="SwitchId" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
-  <Association Name="KolanConnectionSwitch">
-    <End Role="KolanConnection" Type="ClientConnectModel.Store.KolanConnectionSet" Multiplicity="0..1" />
-    <End Role="Switch" Type="ClientConnectModel.Store.SwitchSet" Multiplicity="1" />
-    <ReferentialConstraint>
-      <Principal Role="Switch">
-        <PropertyRef Name="Id" />
-      </Principal>
-      <Dependent Role="KolanConnection">
-        <PropertyRef Name="SwitchId" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
-  <Association Name="SwitchTelnetConnection">
-    <End Role="Switch" Type="ClientConnectModel.Store.SwitchSet" Multiplicity="1" />
-    <End Role="TelnetConnection" Type="ClientConnectModel.Store.TelnetConnectionSet" Multiplicity="0..1" />
-    <ReferentialConstraint>
-      <Principal Role="Switch">
-        <PropertyRef Name="Id" />
-      </Principal>
-      <Dependent Role="TelnetConnection">
-        <PropertyRef Name="SwitchId" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
-  <Association Name="SwitchFile">
-    <End Role="Switch" Type="ClientConnectModel.Store.SwitchSet" Multiplicity="1" />
-    <End Role="File" Type="ClientConnectModel.Store.FileSet" Multiplicity="*" />
-    <ReferentialConstraint>
-      <Principal Role="Switch">
-        <PropertyRef Name="Id" />
-      </Principal>
-      <Dependent Role="File">
-        <PropertyRef Name="SwitchId" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
-</Schema></edmx:StorageModels>
+      <Schema Namespace="ClientConnectModel.Store" Alias="Self" Provider="System.Data.SqlClient"
+              ProviderManifestToken="2012"
+              xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator"
+              xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityContainer Name="ClientConnectModelStoreContainer">
+          <EntitySet Name="SwitchSet" EntityType="ClientConnectModel.Store.SwitchSet" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="PbxConnectionSet" EntityType="ClientConnectModel.Store.PbxConnectionSet" store:Type="Tables"
+                     Schema="dbo" />
+          <EntitySet Name="KolanConnectionSet" EntityType="ClientConnectModel.Store.KolanConnectionSet"
+                     store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="TelnetConnectionSet" EntityType="ClientConnectModel.Store.TelnetConnectionSet"
+                     store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="FileSet" EntityType="ClientConnectModel.Store.FileSet" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="UserSet" EntityType="ClientConnectModel.Store.UserSet" store:Type="Tables" Schema="dbo" />
+          <AssociationSet Name="SwitchPbxConnection" Association="ClientConnectModel.Store.SwitchPbxConnection">
+            <End Role="Switch" EntitySet="SwitchSet" />
+            <End Role="PbxConnection" EntitySet="PbxConnectionSet" />
+          </AssociationSet>
+          <AssociationSet Name="KolanConnectionSwitch" Association="ClientConnectModel.Store.KolanConnectionSwitch">
+            <End Role="KolanConnection" EntitySet="KolanConnectionSet" />
+            <End Role="Switch" EntitySet="SwitchSet" />
+          </AssociationSet>
+          <AssociationSet Name="SwitchTelnetConnection" Association="ClientConnectModel.Store.SwitchTelnetConnection">
+            <End Role="Switch" EntitySet="SwitchSet" />
+            <End Role="TelnetConnection" EntitySet="TelnetConnectionSet" />
+          </AssociationSet>
+          <AssociationSet Name="SwitchFile" Association="ClientConnectModel.Store.SwitchFile">
+            <End Role="Switch" EntitySet="SwitchSet" />
+            <End Role="File" EntitySet="FileSet" />
+          </AssociationSet>
+        </EntityContainer>
+        <EntityType Name="SwitchSet">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" Nullable="false" />
+          <Property Name="CrmNum" Type="nvarchar(max)" Nullable="true" />
+          <Property Name="Comments" Type="nvarchar(max)" Nullable="true" />
+          <Property Name="Name" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="SwRelease" Type="nvarchar(max)" Nullable="true" />
+          <Property Name="MachineType" Type="nvarchar(max)" Nullable="true" />
+          <Property Name="SiteId" Type="int" Nullable="true" />
+          <Property Name="Tid" Type="nvarchar(max)" Nullable="true" />
+        </EntityType>
+        <EntityType Name="PbxConnectionSet">
+          <Key>
+            <PropertyRef Name="SwitchId" />
+          </Key>
+          <Property Name="SwitchId" Type="int" Nullable="false" />
+          <Property Name="DialNum" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="LoginName" Type="nvarchar(max)" Nullable="true" />
+          <Property Name="LoginPassword" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="DebugPassword" Type="nvarchar(max)" Nullable="true" />
+          <Property Name="BaudRate" Type="int" Nullable="false" />
+          <Property Name="ParDataStop" Type="nvarchar(max)" Nullable="false" />
+        </EntityType>
+        <EntityType Name="KolanConnectionSet">
+          <Key>
+            <PropertyRef Name="SwitchId" />
+          </Key>
+          <Property Name="SwitchId" Type="int" Nullable="false" />
+          <Property Name="DialNum" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="BaudRate" Type="int" Nullable="false" />
+          <Property Name="ParDataStop" Type="nvarchar(max)" Nullable="false" />
+        </EntityType>
+        <EntityType Name="TelnetConnectionSet">
+          <Key>
+            <PropertyRef Name="SwitchId" />
+          </Key>
+          <Property Name="SwitchId" Type="int" Nullable="false" />
+          <Property Name="IpAddress" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="UserNameSS" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="PasswordSS" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="UserNameCS" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="PasswordCS" Type="nvarchar(max)" Nullable="false" />
+        </EntityType>
+        <EntityType Name="FileSet">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="DateTime" Type="datetime" Nullable="false" />
+          <Property Name="Content" Type="varbinary(max)" Nullable="false" />
+          <Property Name="SwitchId" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="UserSet">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Username" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="PasswordHash" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="AccessLevel" Type="int" Nullable="false" />
+        </EntityType>
+        <Association Name="SwitchPbxConnection">
+          <End Role="Switch" Type="ClientConnectModel.Store.SwitchSet" Multiplicity="1" />
+          <End Role="PbxConnection" Type="ClientConnectModel.Store.PbxConnectionSet" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="Switch">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="PbxConnection">
+              <PropertyRef Name="SwitchId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="KolanConnectionSwitch">
+          <End Role="KolanConnection" Type="ClientConnectModel.Store.KolanConnectionSet" Multiplicity="0..1" />
+          <End Role="Switch" Type="ClientConnectModel.Store.SwitchSet" Multiplicity="1" />
+          <ReferentialConstraint>
+            <Principal Role="Switch">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="KolanConnection">
+              <PropertyRef Name="SwitchId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="SwitchTelnetConnection">
+          <End Role="Switch" Type="ClientConnectModel.Store.SwitchSet" Multiplicity="1" />
+          <End Role="TelnetConnection" Type="ClientConnectModel.Store.TelnetConnectionSet" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="Switch">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="TelnetConnection">
+              <PropertyRef Name="SwitchId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="SwitchFile">
+          <End Role="Switch" Type="ClientConnectModel.Store.SwitchSet" Multiplicity="1" />
+          <End Role="File" Type="ClientConnectModel.Store.FileSet" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Switch">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="File">
+              <PropertyRef Name="SwitchId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+      </Schema>
+    </edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
-      <Schema xmlns="http://schemas.microsoft.com/ado/2009/11/edm" xmlns:cg="http://schemas.microsoft.com/ado/2006/04/codegeneration" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" Namespace="ClientConnectModel" Alias="Self" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" annotation:UseStrongSpatialTypes="false">
+      <Schema xmlns="http://schemas.microsoft.com/ado/2009/11/edm"
+              xmlns:cg="http://schemas.microsoft.com/ado/2006/04/codegeneration"
+              xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator"
+              Namespace="ClientConnectModel" Alias="Self"
+              xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation"
+              annotation:UseStrongSpatialTypes="false">
         <EntityContainer Name="ClientConnectModelContainer" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="SwitchSet" EntityType="ClientConnectModel.Switch" />
           <EntitySet Name="PbxConnectionSet" EntityType="ClientConnectModel.PbxConnection" />
@@ -177,17 +193,21 @@
           <Property Name="MachineType" Type="String" Nullable="true" />
           <Property Name="SiteId" Type="Int32" Nullable="true" />
           <Property Name="Tid" Type="String" Nullable="true" />
-          <NavigationProperty Name="PbxConnection" Relationship="ClientConnectModel.SwitchPbxConnection" FromRole="Switch" ToRole="PbxConnection" />
-          <NavigationProperty Name="KolanConnection" Relationship="ClientConnectModel.KolanConnectionSwitch" FromRole="Switch" ToRole="KolanConnection" />
-          <NavigationProperty Name="TelnetConnection" Relationship="ClientConnectModel.SwitchTelnetConnection" FromRole="Switch" ToRole="TelnetConnection" />
+          <NavigationProperty Name="PbxConnection" Relationship="ClientConnectModel.SwitchPbxConnection"
+                              FromRole="Switch" ToRole="PbxConnection" />
+          <NavigationProperty Name="KolanConnection" Relationship="ClientConnectModel.KolanConnectionSwitch"
+                              FromRole="Switch" ToRole="KolanConnection" />
+          <NavigationProperty Name="TelnetConnection" Relationship="ClientConnectModel.SwitchTelnetConnection"
+                              FromRole="Switch" ToRole="TelnetConnection" />
           <NavigationProperty Name="File" Relationship="ClientConnectModel.SwitchFile" FromRole="Switch" ToRole="File" />
         </EntityType>
-        <EntityType Name="PbxConnection" >
+        <EntityType Name="PbxConnection">
           <Key>
             <PropertyRef Name="SwitchId" />
           </Key>
           <Property Name="SwitchId" Type="Int32" Nullable="false" />
-          <NavigationProperty Name="Switch" Relationship="ClientConnectModel.SwitchPbxConnection" FromRole="PbxConnection" ToRole="Switch" />
+          <NavigationProperty Name="Switch" Relationship="ClientConnectModel.SwitchPbxConnection"
+                              FromRole="PbxConnection" ToRole="Switch" />
           <Property Name="DialNum" Type="String" Nullable="false" />
           <Property Name="LoginName" Type="String" Nullable="true" />
           <Property Name="LoginPassword" Type="String" Nullable="false" />
@@ -212,7 +232,8 @@
             <PropertyRef Name="SwitchId" />
           </Key>
           <Property Name="SwitchId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="None" />
-          <NavigationProperty Name="Switch" Relationship="ClientConnectModel.KolanConnectionSwitch" FromRole="KolanConnection" ToRole="Switch" />
+          <NavigationProperty Name="Switch" Relationship="ClientConnectModel.KolanConnectionSwitch"
+                              FromRole="KolanConnection" ToRole="Switch" />
           <Property Name="DialNum" Type="String" Nullable="false" />
           <Property Name="BaudRate" Type="Int32" Nullable="false" />
           <Property Name="ParDataStop" Type="String" Nullable="false" />
@@ -234,9 +255,13 @@
             <PropertyRef Name="SwitchId" />
           </Key>
           <Property Name="SwitchId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="None" />
-          <NavigationProperty Name="Switch" Relationship="ClientConnectModel.SwitchTelnetConnection" FromRole="TelnetConnection" ToRole="Switch" />
+          <NavigationProperty Name="Switch" Relationship="ClientConnectModel.SwitchTelnetConnection"
+                              FromRole="TelnetConnection" ToRole="Switch" />
           <Property Name="IpAddress" Type="String" Nullable="false" />
-          <Property Name="Script" Type="String" Nullable="false" />
+          <Property Name="UserNameSS" Type="String" Nullable="false" />
+          <Property Name="PasswordSS" Type="String" Nullable="false" />
+          <Property Name="UserNameCS" Type="String" Nullable="false" />
+          <Property Name="PasswordCS" Type="String" Nullable="false" />
         </EntityType>
         <Association Name="SwitchTelnetConnection">
           <End Type="ClientConnectModel.Switch" Role="Switch" Multiplicity="1" />
@@ -257,7 +282,8 @@
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="DateTime" Type="DateTime" Nullable="false" />
           <Property Name="Content" Type="Binary" Nullable="false" />
-          <NavigationProperty Name="Switch" Relationship="ClientConnectModel.SwitchFile" FromRole="File" ToRole="Switch" />
+          <NavigationProperty Name="Switch" Relationship="ClientConnectModel.SwitchFile" FromRole="File"
+                              ToRole="Switch" />
           <Property Name="SwitchId" Type="Int32" Nullable="false" />
         </EntityType>
         <Association Name="SwitchFile">
@@ -285,76 +311,81 @@
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
     <edmx:Mappings>
-    <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
-  <EntityContainerMapping StorageEntityContainer="ClientConnectModelStoreContainer" CdmEntityContainer="ClientConnectModelContainer">
-    <EntitySetMapping Name="SwitchSet">
-      <EntityTypeMapping TypeName="IsTypeOf(ClientConnectModel.Switch)">
-        <MappingFragment StoreEntitySet="SwitchSet">
-          <ScalarProperty Name="Id" ColumnName="Id" />
-          <ScalarProperty Name="CrmNum" ColumnName="CrmNum" />
-          <ScalarProperty Name="Comments" ColumnName="Comments" />
-          <ScalarProperty Name="Name" ColumnName="Name" />
-          <ScalarProperty Name="SwRelease" ColumnName="SwRelease" />
-          <ScalarProperty Name="MachineType" ColumnName="MachineType" />
-          <ScalarProperty Name="SiteId" ColumnName="SiteId" />
-          <ScalarProperty Name="Tid" ColumnName="Tid" />
-        </MappingFragment>
-      </EntityTypeMapping>
-    </EntitySetMapping>
-    <EntitySetMapping Name="PbxConnectionSet">
-      <EntityTypeMapping TypeName="IsTypeOf(ClientConnectModel.PbxConnection)">
-        <MappingFragment StoreEntitySet="PbxConnectionSet">
-          <ScalarProperty Name="SwitchId" ColumnName="SwitchId" />
-          <ScalarProperty Name="DialNum" ColumnName="DialNum" />
-          <ScalarProperty Name="LoginName" ColumnName="LoginName" />
-          <ScalarProperty Name="LoginPassword" ColumnName="LoginPassword" />
-          <ScalarProperty Name="DebugPassword" ColumnName="DebugPassword" />
-          <ScalarProperty Name="BaudRate" ColumnName="BaudRate" />
-          <ScalarProperty Name="ParDataStop" ColumnName="ParDataStop" />
-        </MappingFragment>
-      </EntityTypeMapping>
-    </EntitySetMapping>
-    <EntitySetMapping Name="KolanConnectionSet">
-      <EntityTypeMapping TypeName="IsTypeOf(ClientConnectModel.KolanConnection)">
-        <MappingFragment StoreEntitySet="KolanConnectionSet">
-          <ScalarProperty Name="SwitchId" ColumnName="SwitchId" />
-          <ScalarProperty Name="DialNum" ColumnName="DialNum" />
-          <ScalarProperty Name="BaudRate" ColumnName="BaudRate" />
-          <ScalarProperty Name="ParDataStop" ColumnName="ParDataStop" />
-        </MappingFragment>
-      </EntityTypeMapping>
-    </EntitySetMapping>
-    <EntitySetMapping Name="TelnetConnectionSet">
-      <EntityTypeMapping TypeName="IsTypeOf(ClientConnectModel.TelnetConnection)">
-        <MappingFragment StoreEntitySet="TelnetConnectionSet">
-          <ScalarProperty Name="SwitchId" ColumnName="SwitchId" />
-          <ScalarProperty Name="IpAddress" ColumnName="IpAddress" />
-          <ScalarProperty Name="Script" ColumnName="Script" />
-        </MappingFragment>
-      </EntityTypeMapping>
-    </EntitySetMapping>
-    <EntitySetMapping Name="FileSet">
-      <EntityTypeMapping TypeName="IsTypeOf(ClientConnectModel.File)">
-        <MappingFragment StoreEntitySet="FileSet">
-          <ScalarProperty Name="Id" ColumnName="Id" />
-          <ScalarProperty Name="DateTime" ColumnName="DateTime" />
-          <ScalarProperty Name="Content" ColumnName="Content" />
-          <ScalarProperty Name="SwitchId" ColumnName="SwitchId" />
-        </MappingFragment>
-      </EntityTypeMapping>
-    </EntitySetMapping>
-    <EntitySetMapping Name="UserSet">
-      <EntityTypeMapping TypeName="IsTypeOf(ClientConnectModel.User)">
-        <MappingFragment StoreEntitySet="UserSet">
-          <ScalarProperty Name="Id" ColumnName="Id" />
-          <ScalarProperty Name="Username" ColumnName="Username" />
-          <ScalarProperty Name="PasswordHash" ColumnName="PasswordHash" />
-          <ScalarProperty Name="AccessLevel" ColumnName="AccessLevel" />
-        </MappingFragment>
-      </EntityTypeMapping>
-    </EntitySetMapping>
-  </EntityContainerMapping>
-</Mapping></edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="ClientConnectModelStoreContainer"
+                                CdmEntityContainer="ClientConnectModelContainer">
+          <EntitySetMapping Name="SwitchSet">
+            <EntityTypeMapping TypeName="IsTypeOf(ClientConnectModel.Switch)">
+              <MappingFragment StoreEntitySet="SwitchSet">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="CrmNum" ColumnName="CrmNum" />
+                <ScalarProperty Name="Comments" ColumnName="Comments" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="SwRelease" ColumnName="SwRelease" />
+                <ScalarProperty Name="MachineType" ColumnName="MachineType" />
+                <ScalarProperty Name="SiteId" ColumnName="SiteId" />
+                <ScalarProperty Name="Tid" ColumnName="Tid" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="PbxConnectionSet">
+            <EntityTypeMapping TypeName="IsTypeOf(ClientConnectModel.PbxConnection)">
+              <MappingFragment StoreEntitySet="PbxConnectionSet">
+                <ScalarProperty Name="SwitchId" ColumnName="SwitchId" />
+                <ScalarProperty Name="DialNum" ColumnName="DialNum" />
+                <ScalarProperty Name="LoginName" ColumnName="LoginName" />
+                <ScalarProperty Name="LoginPassword" ColumnName="LoginPassword" />
+                <ScalarProperty Name="DebugPassword" ColumnName="DebugPassword" />
+                <ScalarProperty Name="BaudRate" ColumnName="BaudRate" />
+                <ScalarProperty Name="ParDataStop" ColumnName="ParDataStop" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="KolanConnectionSet">
+            <EntityTypeMapping TypeName="IsTypeOf(ClientConnectModel.KolanConnection)">
+              <MappingFragment StoreEntitySet="KolanConnectionSet">
+                <ScalarProperty Name="SwitchId" ColumnName="SwitchId" />
+                <ScalarProperty Name="DialNum" ColumnName="DialNum" />
+                <ScalarProperty Name="BaudRate" ColumnName="BaudRate" />
+                <ScalarProperty Name="ParDataStop" ColumnName="ParDataStop" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TelnetConnectionSet">
+            <EntityTypeMapping TypeName="IsTypeOf(ClientConnectModel.TelnetConnection)">
+              <MappingFragment StoreEntitySet="TelnetConnectionSet">
+                <ScalarProperty Name="SwitchId" ColumnName="SwitchId" />
+                <ScalarProperty Name="IpAddress" ColumnName="IpAddress" />
+                <ScalarProperty Name="UserNameSS" ColumnName="UserNameSS" />
+                <ScalarProperty Name="PasswordSS" ColumnName="PasswordSS" />
+                <ScalarProperty Name="UserNameCS" ColumnName="UserNameCS" />
+                <ScalarProperty Name="PasswordCS" ColumnName="PasswordCS" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="FileSet">
+            <EntityTypeMapping TypeName="IsTypeOf(ClientConnectModel.File)">
+              <MappingFragment StoreEntitySet="FileSet">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="DateTime" ColumnName="DateTime" />
+                <ScalarProperty Name="Content" ColumnName="Content" />
+                <ScalarProperty Name="SwitchId" ColumnName="SwitchId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="UserSet">
+            <EntityTypeMapping TypeName="IsTypeOf(ClientConnectModel.User)">
+              <MappingFragment StoreEntitySet="UserSet">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Username" ColumnName="Username" />
+                <ScalarProperty Name="PasswordHash" ColumnName="PasswordHash" />
+                <ScalarProperty Name="AccessLevel" ColumnName="AccessLevel" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
   </edmx:Runtime>
   <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">

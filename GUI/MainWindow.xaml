@@ -5,66 +5,71 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:GUI"
         mc:Ignorable="d"
-        Title="מערכת ניהול התחברויות למרכזיות נורטל" Height="420" Width="600" FlowDirection="RightToLeft">
-    <Grid>
+        Title="מערכת ניהול התחברויות למרכזיות נורטל" Height="450" Width="630" FlowDirection="RightToLeft"
+        Background="White">
+    <Grid Width="622" Height="419">
         <Grid.Background>
             <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
-                <GradientStop Color="Black" Offset="0"/>
-                <GradientStop Color="White" Offset="1"/>
+                <GradientStop Color="Black" Offset="0" />
+                <GradientStop Color="White" Offset="1" />
             </LinearGradientBrush>
         </Grid.Background>
         <Border BorderBrush="Black" BorderThickness="1" Margin="125,65,125,64">
             <Border.Background>
                 <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
-                    <GradientStop Color="Black" Offset="0"/>
-                    <GradientStop Color="White" Offset="1"/>
+                    <GradientStop Color="Black" Offset="0" />
+                    <GradientStop Color="White" Offset="1" />
                 </LinearGradientBrush>
             </Border.Background>
-            <Image x:Name="image"/>
+            <Image x:Name="image" HorizontalAlignment="Right" Width="348" Margin="0,1,13,-1" />
         </Border>
-        <Button x:Name="Login_Button" Content="כניסה" Margin="347,272,145,84" FontSize="16" FontFamily="Segoe UI Black" Click="login_Click" IsDefault="True">
+        <Button x:Name="Login_Button" Content="כניסה" Margin="347,275,145,99" FontSize="16" FontFamily="Segoe UI Black"
+                Click="login_Click" Height="44" IsDefault="True">
             <Button.BorderBrush>
                 <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
-                    <GradientStop Color="Black" Offset="0"/>
-                    <GradientStop Color="White" Offset="1"/>
+                    <GradientStop Color="Black" Offset="0" />
+                    <GradientStop Color="White" Offset="1" />
                 </LinearGradientBrush>
             </Button.BorderBrush>
             <Button.Background>
                 <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
-                    <GradientStop Color="Black" Offset="0"/>
-                    <GradientStop Color="White" Offset="1"/>
+                    <GradientStop Color="Black" Offset="0" />
+                    <GradientStop Color="White" Offset="1" />
                 </LinearGradientBrush>
             </Button.Background>
         </Button>
-        <Label x:Name="UserName_Label" Content="שם משתמש" Margin="141,80,344,276" RenderTransformOrigin="-6.263,-0.115" FontSize="14" FontFamily="Segoe UI Black">
+        <Label x:Name="UserName_Label" Content="שם משתמש" Margin="141,82,374,303" RenderTransformOrigin="-6.263,-0.115"
+               FontSize="14" FontFamily="Segoe UI Black">
             <Label.BorderBrush>
                 <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
-                    <GradientStop Color="Black" Offset="0"/>
-                    <GradientStop Color="White" Offset="1"/>
+                    <GradientStop Color="Black" Offset="0" />
+                    <GradientStop Color="White" Offset="1" />
                 </LinearGradientBrush>
             </Label.BorderBrush>
             <Label.Background>
                 <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
-                    <GradientStop Color="Black" Offset="0"/>
-                    <GradientStop Color="White" Offset="1"/>
+                    <GradientStop Color="Black" Offset="0" />
+                    <GradientStop Color="White" Offset="1" />
                 </LinearGradientBrush>
             </Label.Background>
         </Label>
-        <Label x:Name="Password_Label" Content="סיסמא" HorizontalAlignment="Left" Margin="141,170,0,188" RenderTransformOrigin="-7.671,-1.327" Width="107" Height="33" FontSize="14" FontFamily="Segoe UI Black">
+        <Label x:Name="Password_Label" Content="סיסמא" HorizontalAlignment="Left" Margin="141,170,0,216"
+               RenderTransformOrigin="-7.671,-1.327" Width="107" Height="34" FontSize="14" FontFamily="Segoe UI Black">
             <Label.BorderBrush>
                 <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
-                    <GradientStop Color="Black" Offset="0"/>
-                    <GradientStop Color="White" Offset="1"/>
+                    <GradientStop Color="Black" Offset="0" />
+                    <GradientStop Color="White" Offset="1" />
                 </LinearGradientBrush>
             </Label.BorderBrush>
             <Label.Background>
                 <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
-                    <GradientStop Color="Black" Offset="0"/>
-                    <GradientStop Color="White" Offset="1"/>
+                    <GradientStop Color="Black" Offset="0" />
+                    <GradientStop Color="White" Offset="1" />
                 </LinearGradientBrush>
             </Label.Background>
         </Label>
-        <TextBox x:Name="UserName_Box" Height="33" Margin="141,118,246,0" TextWrapping="Wrap" VerticalAlignment="Top" FontSize="16"/>
-        <PasswordBox x:Name="Password_Box" Height="33" Margin="141,205,246,0" VerticalAlignment="Top" FontSize="14"/>
+        <TextBox x:Name="UserName_Box" Height="33" Margin="141,118,246,0" TextWrapping="Wrap" VerticalAlignment="Top"
+                 FontSize="16" />
+        <PasswordBox x:Name="Password_Box" Height="33" Margin="141,205,246,0" VerticalAlignment="Top" FontSize="14" />
     </Grid>
 </Window>

@@ -1,11 +1,13 @@
-﻿using System.Collections.Generic;
-using System.Diagnostics;
+﻿using System;
+using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
-using DataTransfer;
-using Switch = DataTransfer.Switch;
+using Database;
+using NDde.Client;
+using File = System.IO.File;
 
 namespace GUI
 {
@@ -39,27 +41,213 @@ namespace GUI
 
         private void Edit_Click(object sender, RoutedEventArgs e)
         {
-            EditPage ep = new EditPage();
-            //over between some page
-            Content = new Frame {Content = ep};
-            //over between one page
-            //this.Content = ep;
+            if (CustomerList_Box.SelectedItem == null)
+            {
+                MessageBox.Show("לא נבחר אף לקוח לעריכה", "בעיה בעריכת לקוח", MessageBoxButton.OK,
+                    MessageBoxImage.Error);
+                return;
+            }
+
+            string switchIdString = CustomerList_Box.SelectedItem.ToString();
+            string[] selectedCustomerArr = switchIdString.Split(' ');
+            int switchId = int.Parse(selectedCustomerArr[0]);
+
+            using (ClientConnectModelContainer modelContainer = new ClientConnectModelContainer())
+            {
+                Switch selectedSwitch = modelContainer.SwitchSet.Single(sw => sw.Id == switchId);
+                EditPage ep = new EditPage(selectedSwitch);
+                //over between some page
+                Content = new Frame {Content = ep};
+            }
         }
 
         private void DialPbx_Click(object sender, RoutedEventArgs e)
         {
-            MessageBox.Show("Dial to Pbx");
-            Process.Start("C:\\Program Files\\Symantec\\Procomm Plus\\PROGRAMS\\PW5.EXE",
-                "TERMINAL \"C:\\TX1 - PS\\MyProg\\newtest.was\" 089157312 bezeqint __Ngen@14");
+            string dialNum = null;
+            string loginName = null;
+            string loginPassword = null;
+            long baudRate;
+            int dataBits;
+            int stopBits;
+            string s4DebugPassword = null;
+            int parity;
+            string selectedCustomer = CustomerList_Box.SelectedItem.ToString();
+            string[] selectedCustomerArr = selectedCustomer.Split(' ');
+            int switchIdSelcted = int.Parse(selectedCustomerArr[0]);
+
+            using (ClientConnectModelContainer modelContainer = new ClientConnectModelContainer())
+            {
+                PbxConnection allSwitchIdData = modelContainer.PbxConnectionSet.Single(s =>
+                    s.SwitchId == switchIdSelcted);
+                dialNum = allSwitchIdData.DialNum;
+
+                loginName = allSwitchIdData.LoginName;
+
+                loginPassword = allSwitchIdData.LoginPassword;
+
+                if (allSwitchIdData.ParDataStop != null && allSwitchIdData.BaudRate != 0)
+                {
+                    string[] parDataStopArr = allSwitchIdData.ParDataStop.Split('-');
+                    switch (parDataStopArr[0])
+                    {
+                        case "N":
+                            parity = 0;
+                            break;
+                        case "O":
+                            parity = 1;
+                            break;
+                        case "E":
+                            parity = 2;
+                            break;
+                        case "M":
+                            parity = 3;
+                            break;
+                        case "S":
+                            parity = 4;
+                            break;
+                        default:
+                            throw new Exception("unexpected parity: " + parDataStopArr[0]);
+                    }
+
+                    dataBits = int.Parse(parDataStopArr[1]);
+                    stopBits = int.Parse(parDataStopArr[2]);
+
+                    baudRate = allSwitchIdData.BaudRate;
+                }
+                else
+                {
+                    parity = 0;
+                    dataBits = 8;
+                    stopBits = 1;
+                    baudRate = 9600;
+                }
+            }
+
+            string filePath = WriteScript(dialNum, loginName, loginPassword, baudRate, parity, dataBits, stopBits);
+
+            try
+            {
+                using (DdeClient client = new DdeClient("PW5", "System"))
+                {
+                    client.Connect();
+                    client.Execute($"EXECUTE {filePath}", 30);
+                }
+            }
+            catch (Exception ex)
+            {
+            }
+        }
+
+        private string WriteScript(string dialNum, string loginName, string loginPassword, long baudRate, int parity,
+            int dataBits, int stopBits)
+        {
+            string fileFormat = File.ReadAllText("scriptformat.txt");
+            string formattedScript = string.Format(fileFormat, dialNum, loginName, loginPassword, baudRate, parity,
+                dataBits, stopBits);
+            string scriptFilePath = Path.Combine(Directory.GetCurrentDirectory(), "script.was");
+            File.WriteAllText(scriptFilePath, formattedScript);
+            return scriptFilePath;
         }
 
         private void DialKolan_Click(object sender, RoutedEventArgs e)
         {
-            MessageBox.Show("Dial To Kolan");
+            string dialNum = null;
+            long baudRate = 0;
+            string selectedCustomer = CustomerList_Box.SelectedItem.ToString();
+            string[] selectedCustomerArr = selectedCustomer.Split(' ');
+            int switchIdSelcted = int.Parse(selectedCustomerArr[0]);
+
+            using (ClientConnectModelContainer modelContainer = new ClientConnectModelContainer())
+            {
+                KolanConnection allSwitchIdData = modelContainer.KolanConnectionSet.SingleOrDefault(s =>
+                    s.SwitchId == switchIdSelcted);
+                if (allSwitchIdData != null)
+                {
+                    dialNum = allSwitchIdData.DialNum;
+                    baudRate = allSwitchIdData.BaudRate;
+                }
+            }
+
+            string filePath = WriteKolanScript(dialNum, baudRate);
+
+            try
+            {
+                using (DdeClient client = new DdeClient("PW5", "System"))
+                {
+                    client.Connect();
+                    client.Execute($"EXECUTE {filePath}", 30);
+                }
+            }
+            catch (Exception ex)
+            {
+            }
         }
+
+        private string WriteKolanScript(string dialNum, long baudRate)
+        {
+            string fileFormat = File.ReadAllText("scriptKolanformat.txt");
+            string formattedScript = string.Format(fileFormat, dialNum, baudRate);
+            string scriptFilePath = Path.Combine(Directory.GetCurrentDirectory(), "kolanscript.was");
+            File.WriteAllText(scriptFilePath, formattedScript);
+            return scriptFilePath;
+        }
+
+
+        //if (BaudRate == 2400)
+        //    Process.Start("C:\\Program Files (x86)\\Symantec\\Procomm Plus\\PROGRAMS\\PW5.EXE",
+        //        "TERMINAL \"C:\\TX1-PS\\MyProg\\connectKolan24.was\" " + s0DialNum);
+        //else
+        //    Process.Start("C:\\Program Files (x86)\\Symantec\\Procomm Plus\\PROGRAMS\\PW5.EXE",
+        //        "TERMINAL \"C:\\TX1-PS\\MyProg\\connectKolan96.was\" " + s0DialNum);
+
 
         private void ConnectPbxInTelnet_Click(object sender, RoutedEventArgs e)
         {
+            string ipAdress;
+            //string siganlServerLogi = null;
+            //string siganlServerPass = null;
+            //string callServerLogi = null;
+            //string callServerPass = null;
+            string selectedCustomer = CustomerList_Box.SelectedItem.ToString();
+            string[] selectedCustomerArr = selectedCustomer.Split(' ');
+            int switchIdSelcted = int.Parse(selectedCustomerArr[0]);
+
+            using (ClientConnectModelContainer modelContainer = new ClientConnectModelContainer())
+            {
+                TelnetConnection allSwitchIdData = modelContainer.TelnetConnectionSet.Single(s =>
+                    s.SwitchId == switchIdSelcted);
+                ipAdress = allSwitchIdData.IpAddress;
+                //siganlServerLogi = allSwitchIdData.SignalServerLogi;
+                //siganlServerPass = allSwitchIdData.SignalServerPass;
+                //callServerLogi = allSwitchIdData.CallServerLogi;
+                //callServerPass = allSwitchIdData.CallServerPass;
+            }
+
+            string filePath = WriteTelnetScript(ipAdress);
+            // string filePath = WriteTelnetScript(ipAdress, siganlServerLogi, siganlServerPass, callServerLogi, callServerPass);
+
+            try
+            {
+                using (DdeClient client = new DdeClient("PW5", "System"))
+                {
+                    client.Connect();
+                    client.Execute($"EXECUTE {filePath}", 30);
+                }
+            }
+            catch (Exception ex)
+            {
+            }
+        }
+
+        //  private string WriteTelnetScript(string ipAdress, string siganlServerLogi, string siganlServerPass, string callServerLogi, string callServerPass)
+        private string WriteTelnetScript(string ipAdress)
+        {
+            string fileFormat = File.ReadAllText("scripttelnetformat.txt");
+            // string formattedScript = string.Format(fileFormat, ipAdress, siganlServerLogi, siganlServerPass, callServerLogi, callServerPass);
+            string formattedScript = string.Format(fileFormat, ipAdress);
+            string scriptFilePath = Path.Combine(Directory.GetCurrentDirectory(), "telnetscript.was");
+            File.WriteAllText(scriptFilePath, formattedScript);
+            return scriptFilePath;
         }
 
         private void ConnectClientNetwork_Click(object sender, RoutedEventArgs e)
@@ -83,6 +271,30 @@ namespace GUI
                         s.Id.ToString().Contains(searchText)));
                 else
                     RefreshListBox(modelContainer.SwitchSet);
+            }
+        }
+
+        private void AddNew_Client(object sender, RoutedEventArgs e)
+        {
+            if (MainWindow.UserAccessLevel != AccessLevel.Administrator)
+            {
+                MessageBox.Show("אינך מורשה להוסיף לקוח יש לפנות למנהל המערכת");
+                return;
+            }
+
+            using (ClientConnectModelContainer modelContainer = new ClientConnectModelContainer())
+            {
+                try
+                {
+                    Switch newSwitch = new Switch();
+                    EditPage ep = new EditPage(newSwitch);
+                    Content = new Frame {Content = ep};
+                }
+                catch (Exception exception)
+                {
+                    MessageBox.Show("לא ניתן להוסיף לקוח זה פנה למנהל המערכת");
+                    // throw;
+                }
             }
         }
     }

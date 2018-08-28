@@ -1,0 +1,27 @@
+
+proc main
+
+   commandmode ON
+	waitfor "OK"
+	sendkey ALT 'U'
+
+        transmit  "AT&FX4E1V1L3&B1&C1&D2&H1&K1&R2s2=37"
+        transmit "^M"
+        waitfor "OK"
+        
+       ;Set Modem Connection "direct connect-Com1"
+        Set Port Baudrate {1}
+        Set Port Parity NONE
+        Set Port Databits 8
+        Set Port Stopbits 1
+
+	transmit "ATDT "
+	transmit "{0}"
+	transmit "^M"
+	transmit "^M"
+	waitfor "CONNECT"
+	transmit "^M"
+	
+	sendkey CTRL 'R'
+	
+endproc
