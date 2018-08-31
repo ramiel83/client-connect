@@ -65,7 +65,6 @@ namespace GUI
             long baudRate;
             int dataBits;
             int stopBits;
-            string s4DebugPassword = null;
             int parity;
             string selectedCustomer = CustomerList_Box.SelectedItem.ToString();
             string[] selectedCustomerArr = selectedCustomer.Split(' ');
@@ -204,27 +203,25 @@ namespace GUI
         private void ConnectPbxInTelnet_Click(object sender, RoutedEventArgs e)
         {
             string ipAdress;
-            //string siganlServerLogi = null;
-            //string siganlServerPass = null;
-            //string callServerLogi = null;
-            //string callServerPass = null;
-            string selectedCustomer = CustomerList_Box.SelectedItem.ToString();
-            string[] selectedCustomerArr = selectedCustomer.Split(' ');
-            int switchIdSelcted = int.Parse(selectedCustomerArr[0]);
+            string siganlServerLogi = null;
+            string siganlServerPass = null;
+            string callServerLogi = null;
+            string callServerPass = null;
+            int switchIdSelcted = GetSelctedSwitchId();
 
             using (ClientConnectModelContainer modelContainer = new ClientConnectModelContainer())
             {
                 TelnetConnection allSwitchIdData = modelContainer.TelnetConnectionSet.Single(s =>
-                    s.SwitchId == switchIdSelcted);
+                s.SwitchId == switchIdSelcted);
                 ipAdress = allSwitchIdData.IpAddress;
-                //siganlServerLogi = allSwitchIdData.SignalServerLogi;
-                //siganlServerPass = allSwitchIdData.SignalServerPass;
-                //callServerLogi = allSwitchIdData.CallServerLogi;
-                //callServerPass = allSwitchIdData.CallServerPass;
+                siganlServerLogi = allSwitchIdData.UserNameSS;
+                siganlServerPass = allSwitchIdData.PasswordSS;
+                callServerLogi = allSwitchIdData.UserNameCS;
+                callServerPass = allSwitchIdData.PasswordCS;
             }
 
-            string filePath = WriteTelnetScript(ipAdress);
-            // string filePath = WriteTelnetScript(ipAdress, siganlServerLogi, siganlServerPass, callServerLogi, callServerPass);
+           
+            string filePath = WriteTelnetScript(ipAdress, siganlServerLogi, siganlServerPass, callServerLogi, callServerPass);
 
             try
             {
@@ -241,12 +238,19 @@ namespace GUI
             Application.Current.MainWindow.WindowState = WindowState.Minimized;
         }
 
+        private int GetSelctedSwitchId()
+        {
+            string selectedCustomer = CustomerList_Box.SelectedItem.ToString();
+            string[] selectedCustomerArr = selectedCustomer.Split(' ');
+            int switchIdSelcted = int.Parse(selectedCustomerArr[0]);
+            return switchIdSelcted;
+        }
+
         //  private string WriteTelnetScript(string ipAdress, string siganlServerLogi, string siganlServerPass, string callServerLogi, string callServerPass)
-        private string WriteTelnetScript(string ipAdress)
+        private string WriteTelnetScript(string ipAdress, string siganlServerLogi, string siganlServerPass, string callServerLogi, string callServerPass)
         {
             string fileFormat = File.ReadAllText("scripttelnetformat.txt");
-            // string formattedScript = string.Format(fileFormat, ipAdress, siganlServerLogi, siganlServerPass, callServerLogi, callServerPass);
-            string formattedScript = string.Format(fileFormat, ipAdress);
+            string formattedScript = string.Format(fileFormat, ipAdress, siganlServerLogi, siganlServerPass, callServerLogi, callServerPass);
             string scriptFilePath = Path.Combine(Directory.GetCurrentDirectory(), "telnetscript.was");
             File.WriteAllText(scriptFilePath, formattedScript);
             return scriptFilePath;
@@ -254,6 +258,8 @@ namespace GUI
 
         private void ConnectClientNetwork_Click(object sender, RoutedEventArgs e)
         {
+            int switchIdSelcted = GetSelctedSwitchId();
+
         }
 
         private void RefreshListBox(IEnumerable<Switch> switches)
@@ -278,7 +284,7 @@ namespace GUI
 
         private void AddNew_Client(object sender, RoutedEventArgs e)
         {
-            if (MainWindow.UserAccessLevel != AccessLevel.Administrator)
+            if (MainWindow.UserAccessLevel > AccessLevel.Manager)
             {
                 MessageBox.Show("אינך מורשה להוסיף לקוח יש לפנות למנהל המערכת");
                 return;

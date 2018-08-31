@@ -2,17 +2,15 @@ proc main
 	string Line
 	integer srow,scol,Row,count=0
        ;pwexit
-	 ;  disconnect
-	; LOGOUT
-;	
+	   ;disconnect
+	   ;LOGOUT
+	
 loop:	commandmode ON
-  ;while 1
-  ;    yield
-   ;endwhile
- ;  kermserve FINISH
+        ;while 1
+        ;yield
+        ;endwhile
+        ;kermserve FINISH
         count++
-        if success
-      
         waitfor "OK" 1
         transmit  "AT&FX4E1V1L3&B1&C1&D2&H1&K1&R2s2=37"
         transmit "^M"
@@ -25,18 +23,19 @@ loop:	commandmode ON
         Set Port Stopbits {6}
 	
 
-	transmit "ATDT "
-	transmit "{0}"
-	transmit "^M"
-	transmit "^M"
-	waitfor "CONNECT"
-	transmit "^M"
-
-	
-
-	waitfor "." 1
-	waitfor ">" 1
-	waitfor "TTY" 1
+    	transmit "ATDT "
+    	transmit "{0}"
+		transmit "^M"
+		transmit "^M"
+		waitfor "CONNECT"
+		transmit "^M"
+		 while $CARRIER ; Loop as long as the modem is
+		yield ; connected.
+		endwhile 
+		commandmode OFF  
+		waitfor "." 1
+		waitfor ">" 1
+		waitfor "TTY" 1
         getcur srow scol
        ;usermsg "Cursor is at %d,%d" srow scol
         for Row = srow-3 upto srow        ; Loop through each row on screen.
@@ -51,8 +50,8 @@ loop:	commandmode ON
          endfor
 		 
 		  getcur srow scol
-   ;usermsg "Cursor is at %d,%d" srow scol
-        for Row = srow-3 upto srow        ; Loop through each row on screen.
+         ;usermsg "Cursor is at %d,%d" srow scol
+         for Row = srow-3 upto srow        ; Loop through each row on screen.
          termgets Row 0 Line 20      ; Get line specified by row.
 		  if strfind Line "BUSY" 
 	
@@ -64,24 +63,19 @@ loop:	commandmode ON
          endif
          endfor
 		 
-    transmit "^M"
-	transmit "LOGI "
-	transmit "{1}"
-	transmit "^M"
-	waitfor "PASS" 1
-	transmit "{2}"
-	transmit "^M"
-	transmit "^M"
+		transmit "^M"
+		transmit "LOGI "
+		transmit "{1}"
+		transmit "^M"
+		waitfor "PASS" 1
+		transmit "{2}"
+		transmit "^M"
+		transmit "^M"
 
-	 else
-	 commandmode on
-	 if count < 3
-	 goto loop
-	 else 
-	 goto end
-	 endif
-	endif
-	end:
+		
+
+
+	 end:
 	;disconnect
 	
 endproc

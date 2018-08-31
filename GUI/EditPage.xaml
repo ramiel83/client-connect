@@ -156,12 +156,11 @@
                RenderTransformOrigin="3.481,1.308" FontFamily="Segoe UI Black" />
         <TextBox x:Name="TelnetUserNameSS_Box" HorizontalAlignment="Left" Height="23" Margin="210,274,0,0"
                  TextWrapping="Wrap" VerticalAlignment="Top" Width="103" />
-        <TextBox x:Name="TelnetUserNameCS_Box" HorizontalAlignment="Left" Height="23" Margin="210,320,0,0"
-                 TextWrapping="Wrap" VerticalAlignment="Top" Width="103" />
+        <TextBox x:Name="TelnetUserNameCS_Box" HorizontalAlignment="Left" Margin="210,320,0,57"
+                 TextWrapping="Wrap" Width="103" />
         <TextBox x:Name="TelnetPasswordSS_Box" HorizontalAlignment="Left" Height="23" Margin="210,297,0,0"
                  TextWrapping="Wrap" VerticalAlignment="Top" Width="103" />
-        <TextBox x:Name="TelnetPassCS_Box" Height="23" Margin="210,343,287,0" TextWrapping="Wrap"
-                 VerticalAlignment="Top" />
+        <TextBox x:Name="TelnetPassCS_Box" Margin="210,343,287,0" TextWrapping="Wrap" Height="23" VerticalAlignment="Top" />
         <Label x:Name="KolanPhoneNumber_Label" Content="מספר לחיוג" HorizontalAlignment="Left" Margin="120,251,0,0"
                VerticalAlignment="Top" />
         <Label x:Name="KolanBoudrate_Label" Content="קצב שידור" HorizontalAlignment="Left" Margin="114,274,0,0"
@@ -169,7 +168,7 @@
         <Label x:Name="KolanParDataStop_Label" Content="par-data-stop" Margin="113,297,403,0" VerticalAlignment="Top" />
         <Label x:Name="TelnetAddress_Label" Content="כתובת" HorizontalAlignment="Left" Margin="313,251,0,0"
                VerticalAlignment="Top" RenderTransformOrigin="0.795,0.538" />
-        <Label x:Name="TelnetUserNameSS_Label" Content="s.s שם משתמש" Margin="312,274,198,0" VerticalAlignment="Top" />
+        <Label x:Name="TelnetUserNameSS_Label" Content="s.s שם משתמש" Margin="307,274,203,0" VerticalAlignment="Top" Width="90"/>
         <Label x:Name="TelnetPassSS_Label" Content="סיסמה" HorizontalAlignment="Left" Margin="314,297,0,0"
                VerticalAlignment="Top" RenderTransformOrigin="0.261,0.615" />
         <Label x:Name="ClientAddress_Label" Content="כתובת חיבור" HorizontalAlignment="Left" Margin="313,86,0,0"
@@ -182,9 +181,8 @@
                VerticalAlignment="Top" />
         <TextBox x:Name="TelnetAddress_Box" HorizontalAlignment="Left" Height="23" Margin="210,251,0,0"
                  TextWrapping="Wrap" VerticalAlignment="Top" Width="103" />
-        <Label x:Name="TelnetUserNameCS_Label" Content="c.s שם משתמש" Margin="312,320,198,0" VerticalAlignment="Top" />
-        <Label x:Name="TelnetPassCS_Label" Content="סיסמה" HorizontalAlignment="Left" Margin="313,343,0,0"
-               VerticalAlignment="Top" RenderTransformOrigin="0.261,0.615" />
+        <Label x:Name="TelnetUserNameCS_Label" Content="c.s שם משתמש" Margin="307,317,203,57" Width="90" />
+        <Label x:Name="TelnetPassCS_Label" Content="סיסמה" HorizontalAlignment="Left" Margin="313,343,0,31" RenderTransformOrigin="0.261,0.615" />
         <TextBox x:Name="CustomerName_Box" Height="23" Margin="362,4,87,0" TextWrapping="Wrap"
                  VerticalAlignment="Top" />
         <Label x:Name="AttachFile_Label" Content="צרוף קבצים " Margin="459,64,62,0" VerticalAlignment="Top"
@@ -193,7 +191,7 @@
         <Border BorderBrush="Black" BorderThickness="1" Margin="6,70,402,172" RenderTransformOrigin="-1.711,0.03" Panel.ZIndex="-5" />
         <Border BorderBrush="Black" BorderThickness="1" Margin="402,70,6,172" RenderTransformOrigin="-1.711,0.03" Panel.ZIndex="-5" >
             <Grid>
-                <ListBox x:Name="FileListBox" HorizontalAlignment="Left" Height="105" Margin="10,19,0,0" VerticalAlignment="Top" Width="170"/>
+                <ListBox x:Name="FileListBox" Height="105" Margin="10,19,10,0" VerticalAlignment="Top"/>
                 <Button x:Name="addFileButton" Content="הוסף קובץ" HorizontalAlignment="Left" Margin="90,129,0,0" VerticalAlignment="Top" Width="90" Click="addFileButton_Click"/>
                 <Button x:Name="deleteFileButton" Content="מחק קובץ" HorizontalAlignment="Left" Margin="10,129,0,0" VerticalAlignment="Top" Width="75" Click="deleteFileButton_Click"/>
             </Grid>

@@ -14,7 +14,8 @@ namespace GUI
 
         protected override void OnExit(ExitEventArgs e)
         {
-            if (ProcommProcess.Instance != null) ProcommProcess.Instance.Kill();
+            if (ProcommProcess.Instance != null && ProcommProcess.Instance.HasExited != true)
+                ProcommProcess.Instance.Kill();
             base.OnExit(e);
         }
     }

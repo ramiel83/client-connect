@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Data.Entity.Validation;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Windows;
@@ -8,6 +9,7 @@ using System.Windows.Input;
 using Database;
 using Microsoft.Win32;
 using File = Database.File;
+using Switch = Database.Switch;
 
 namespace GUI
 {
@@ -74,7 +76,7 @@ namespace GUI
 
         private void Ok_Click(object sender, RoutedEventArgs e)
         {
-            if (MainWindow.UserAccessLevel != AccessLevel.Administrator)
+            if (MainWindow.UserAccessLevel > AccessLevel.Manager)
             {
                 MessageBox.Show("אינך מורשה לבצע שינויים בדף זה יש לפנות למנהל המערכת", "בעיה בהרשאות",
                     MessageBoxButton.OK, MessageBoxImage.Error);
@@ -203,6 +205,13 @@ namespace GUI
 
         private void addFileButton_Click(object sender, RoutedEventArgs e)
         {
+            if (MainWindow.UserAccessLevel > AccessLevel.Manager)
+            {
+                MessageBox.Show("אינך מורשה לבצע שינויים בדף זה יש לפנות למנהל המערכת", "בעיה בהרשאות",
+                    MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
+
             OpenFileDialog openFileDialog = new OpenFileDialog();
             openFileDialog.Multiselect = false;
             if (openFileDialog.ShowDialog() != true) return;
@@ -246,12 +255,23 @@ namespace GUI
             {
                 int selectedFileId = int.Parse(((ListBoxItem) FileListBox.SelectedItems[0]).Tag.ToString());
                 File file = modelContainer.FileSet.Single(x => x.Id == selectedFileId);
-
+                // save the file to temp path
+                string tempPath = Path.GetTempPath();
+                string newFilePath = Path.Combine(tempPath, file.Name);
+                System.IO.File.WriteAllBytes(newFilePath, file.Content);
+                Process.Start(newFilePath);
             }
         }
 
         private void deleteFileButton_Click(object sender, RoutedEventArgs e)
         {
+            if (MainWindow.UserAccessLevel > AccessLevel.Manager)
+            {
+                MessageBox.Show("אינך מורשה לבצע שינויים בדף זה יש לפנות למנהל המערכת", "בעיה בהרשאות",
+                    MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
+
             if (FileListBox.SelectedItems.Count == 0)
             {
                 MessageBox.Show("לא נבחר אף קובץ", "בחר קובץ", MessageBoxButton.OK, MessageBoxImage.Exclamation);
