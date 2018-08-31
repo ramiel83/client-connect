@@ -18,7 +18,7 @@ namespace GUI
 
         private void login_Click(object sender, RoutedEventArgs e)
         {
-            using (ClientConnectModelContainer modelContainer = new ClientConnectModelContainer())
+            using (MainModel modelContainer = new MainModel())
             {
                 string username = UserName_Box.Text;
                 string passwordHash = Utilities.Sha256(Password_Box.Password);

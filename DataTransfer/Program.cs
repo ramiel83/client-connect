@@ -32,9 +32,7 @@ namespace DataTransfer
                     sw.MachineType =
                         GetMachineTypeComment(reader.GetString(reader.GetOrdinal("Machine")), accessConnection);
                     int? customerId = reader["CustomerID"] as int?;
-                    sw.SiteId = customerId != null && customerId == 0 ? null : customerId;
-                    sw.Tid = reader.GetString(reader.GetOrdinal("TID"));
-                    using (ClientConnectModelContainer modelContainer = new ClientConnectModelContainer())
+                    using (MainModel modelContainer = new MainModel())
                     {
                         modelContainer.SwitchSet.Add(sw);
                         modelContainer.SaveChanges();
@@ -45,25 +43,30 @@ namespace DataTransfer
                     // pbx connection
                     string dialNum = reader.GetString(reader.GetOrdinal("DialNum"));
                     if (!string.IsNullOrWhiteSpace(dialNum))
-                    {
-                        PbxConnection pbxConnection = new PbxConnection();
-                        pbxConnection.SwitchId = sw.Id;
-                        pbxConnection.DialNum = reader.GetString(reader.GetOrdinal("Area")) + dialNum;
-                        pbxConnection.LoginName = reader.GetString(reader.GetOrdinal("UserMerk"));
-                        pbxConnection.LoginPassword = reader.GetString(reader.GetOrdinal("Password"));
-                        pbxConnection.DebugPassword = reader.GetString(reader.GetOrdinal("DebugPass"));
-                        pbxConnection.BaudRate = GetBaudRate(reader.GetString(reader.GetOrdinal("Baudrate")),
-                            accessConnection);
-                        pbxConnection.ParDataStop = GetParDataStop(reader.GetString(reader.GetOrdinal("Parity")),
-                            accessConnection);
-                        using (ClientConnectModelContainer modelContainer = new ClientConnectModelContainer())
+                        try
                         {
-                            modelContainer.PbxConnectionSet.Add(pbxConnection);
-                            modelContainer.SaveChanges();
-                        }
+                            PbxConnection pbxConnection = new PbxConnection();
+                            pbxConnection.SwitchId = sw.Id;
+                            pbxConnection.DialNum = reader.GetString(reader.GetOrdinal("Area")) + dialNum;
+                            pbxConnection.LoginName = reader.GetString(reader.GetOrdinal("UserMerk"));
+                            pbxConnection.LoginPassword = reader.GetString(reader.GetOrdinal("Password"));
+                            pbxConnection.DebugPassword = reader.GetString(reader.GetOrdinal("DebugPass"));
+                            pbxConnection.BaudRate = GetBaudRate(reader.GetString(reader.GetOrdinal("Baudrate")),
+                                accessConnection);
+                            pbxConnection.ParDataStop = GetParDataStop(reader.GetString(reader.GetOrdinal("Parity")),
+                                accessConnection);
+                            using (MainModel modelContainer = new MainModel())
+                            {
+                                modelContainer.PbxConnectionSet.Add(pbxConnection);
+                                modelContainer.SaveChanges();
+                            }
 
-                        Console.WriteLine("added pbx connection for switch id = {0}", sw.Id);
-                    }
+                            Console.WriteLine("added pbx connection for switch id = {0}", sw.Id);
+                        }
+                        catch (Exception ex)
+                        {
+                            Console.WriteLine("error while adding pbx connection. " + ex);
+                        }
                 }
             }
 
@@ -84,7 +87,7 @@ namespace DataTransfer
                         kolanConnection.ParDataStop = GetParDataStop(
                             reader.GetString(reader.GetOrdinal("Parity")),
                             accessConnection);
-                        using (ClientConnectModelContainer modelContainer = new ClientConnectModelContainer())
+                        using (MainModel modelContainer = new MainModel())
                         {
                             modelContainer.KolanConnectionSet.Add(kolanConnection);
                             modelContainer.SaveChanges();
@@ -108,8 +111,8 @@ namespace DataTransfer
                     User user = new User();
                     user.Username = reader.GetString(reader.GetOrdinal("Level"));
                     user.PasswordHash = Utilities.Sha256(reader.GetString(reader.GetOrdinal("Password")));
-                    user.AccessLevel = (int) MapAccessLevel(reader.GetInt16(reader.GetOrdinal("UserLev")));
-                    using (ClientConnectModelContainer modelContainer = new ClientConnectModelContainer())
+                    user.AccessLevel = MapAccessLevel(reader.GetInt16(reader.GetOrdinal("UserLev")));
+                    using (MainModel modelContainer = new MainModel())
                     {
                         modelContainer.UserSet.Add(user);
                         modelContainer.SaveChanges();

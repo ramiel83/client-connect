@@ -144,7 +144,7 @@
                  TextWrapping="Wrap" VerticalAlignment="Top" Width="103" TextChanged="textBox_attach_Copy_TextChanged" />
         <TextBox x:Name="NetworkPort_Box" HorizontalAlignment="Left" Height="23" Margin="210,200,0,0"
                  TextWrapping="Wrap" VerticalAlignment="Top" Width="103" />
-        <TextBox x:Name="ClientAddress_Box" HorizontalAlignment="Left" Height="69" Margin="210,85,0,0"
+        <TextBox x:Name="ClientAddress_Box" HorizontalAlignment="Left" Height="24" Margin="210,85,0,0"
                  TextWrapping="Wrap" VerticalAlignment="Top" Width="103" TextChanged="textBox_attach_Copy4_TextChanged" />
         <TextBox x:Name="NetworkPass_Box" HorizontalAlignment="Left" Height="23" Margin="210,177,0,0"
                  TextWrapping="Wrap" VerticalAlignment="Top" Width="103" />
@@ -198,7 +198,10 @@
         </Border>
         <Border BorderBrush="Black" BorderThickness="1" Margin="205,226,205,29" RenderTransformOrigin="-1.711,0.03" Panel.ZIndex="-5" />
         <Border BorderBrush="Black" BorderThickness="1" Margin="402,226,6,29" RenderTransformOrigin="-1.711,0.03" Panel.ZIndex="-5" />
-        <Border BorderBrush="Black" BorderThickness="1" Margin="205,70,205,172" RenderTransformOrigin="-1.711,0.03" Panel.ZIndex="-5" />
+        <Border BorderBrush="Black" BorderThickness="1" Margin="205,70,205,172" RenderTransformOrigin="-1.711,0.03" Panel.ZIndex="-5" >
+            <TextBox x:Name="SiteName_Box" HorizontalAlignment="Left" Height="23"
+                TextWrapping="Wrap" VerticalAlignment="Top" Width="103" Margin="4,60,0,0" />
+        </Border>
 
         <ComboBox x:Name="KolanBoudrate_ComboBox" HorizontalAlignment="Left" Margin="12,274,0,0"
                   VerticalAlignment="Top" Width="103" Height="23">
@@ -247,6 +250,8 @@
         </Label>
         <TextBox x:Name="CustomerNum_Box" Height="23" Margin="194,4,326,0" TextWrapping="Wrap"
                  VerticalAlignment="Top" />
+        <Label x:Name="SiteName_Label" Content="שם חיבור" HorizontalAlignment="Left" Margin="313,132,0,0"
+            VerticalAlignment="Top" RenderTransformOrigin="-0.24,0.846" />
 
     </Grid>
 </Page>

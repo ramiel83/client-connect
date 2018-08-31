@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Configuration;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Windows;
@@ -8,6 +10,7 @@ using System.Windows.Input;
 using Database;
 using NDde.Client;
 using File = System.IO.File;
+using Switch = Database.Switch;
 
 namespace GUI
 {
@@ -22,7 +25,7 @@ namespace GUI
         {
             InitializeComponent();
 
-            using (ClientConnectModelContainer modelContainer = new ClientConnectModelContainer())
+            using (MainModel modelContainer = new MainModel())
             {
                 RefreshListBox(modelContainer.SwitchSet);
             }
@@ -70,7 +73,7 @@ namespace GUI
             string[] selectedCustomerArr = selectedCustomer.Split(' ');
             int switchIdSelcted = int.Parse(selectedCustomerArr[0]);
 
-            using (ClientConnectModelContainer modelContainer = new ClientConnectModelContainer())
+            using (MainModel modelContainer = new MainModel())
             {
                 PbxConnection allSwitchIdData = modelContainer.PbxConnectionSet.Single(s =>
                     s.SwitchId == switchIdSelcted);
@@ -154,7 +157,7 @@ namespace GUI
             string[] selectedCustomerArr = selectedCustomer.Split(' ');
             int switchIdSelcted = int.Parse(selectedCustomerArr[0]);
 
-            using (ClientConnectModelContainer modelContainer = new ClientConnectModelContainer())
+            using (MainModel modelContainer = new MainModel())
             {
                 KolanConnection allSwitchIdData = modelContainer.KolanConnectionSet.SingleOrDefault(s =>
                     s.SwitchId == switchIdSelcted);
@@ -209,19 +212,20 @@ namespace GUI
             string callServerPass = null;
             int switchIdSelcted = GetSelctedSwitchId();
 
-            using (ClientConnectModelContainer modelContainer = new ClientConnectModelContainer())
+            using (MainModel modelContainer = new MainModel())
             {
                 TelnetConnection allSwitchIdData = modelContainer.TelnetConnectionSet.Single(s =>
-                s.SwitchId == switchIdSelcted);
+                    s.SwitchId == switchIdSelcted);
                 ipAdress = allSwitchIdData.IpAddress;
-                siganlServerLogi = allSwitchIdData.UserNameSS;
-                siganlServerPass = allSwitchIdData.PasswordSS;
-                callServerLogi = allSwitchIdData.UserNameCS;
-                callServerPass = allSwitchIdData.PasswordCS;
+                siganlServerLogi = allSwitchIdData.UsernameSs;
+                siganlServerPass = allSwitchIdData.PasswordSs;
+                callServerLogi = allSwitchIdData.UsernameCs;
+                callServerPass = allSwitchIdData.PasswordCs;
             }
 
-           
-            string filePath = WriteTelnetScript(ipAdress, siganlServerLogi, siganlServerPass, callServerLogi, callServerPass);
+
+            string filePath = WriteTelnetScript(ipAdress, siganlServerLogi, siganlServerPass, callServerLogi,
+                callServerPass);
 
             try
             {
@@ -247,10 +251,12 @@ namespace GUI
         }
 
         //  private string WriteTelnetScript(string ipAdress, string siganlServerLogi, string siganlServerPass, string callServerLogi, string callServerPass)
-        private string WriteTelnetScript(string ipAdress, string siganlServerLogi, string siganlServerPass, string callServerLogi, string callServerPass)
+        private string WriteTelnetScript(string ipAdress, string siganlServerLogi, string siganlServerPass,
+            string callServerLogi, string callServerPass)
         {
             string fileFormat = File.ReadAllText("scripttelnetformat.txt");
-            string formattedScript = string.Format(fileFormat, ipAdress, siganlServerLogi, siganlServerPass, callServerLogi, callServerPass);
+            string formattedScript = string.Format(fileFormat, ipAdress, siganlServerLogi, siganlServerPass,
+                callServerLogi, callServerPass);
             string scriptFilePath = Path.Combine(Directory.GetCurrentDirectory(), "telnetscript.was");
             File.WriteAllText(scriptFilePath, formattedScript);
             return scriptFilePath;
@@ -259,7 +265,13 @@ namespace GUI
         private void ConnectClientNetwork_Click(object sender, RoutedEventArgs e)
         {
             int switchIdSelcted = GetSelctedSwitchId();
-
+            using (MainModel modelContainer = new MainModel())
+            {
+                CheckPointVpnConnection checkPointVpnConnection =
+                    modelContainer.CheckPointVpnConnectionSet.Single(s => s.SwitchId == switchIdSelcted);
+                Process.Start(ConfigurationManager.AppSettings["CheckPointEndPointConnectCommandLinePath"],
+                    $"connect -s {checkPointVpnConnection.Site} -u {checkPointVpnConnection.Username} -p {checkPointVpnConnection.Password}");
+            }
         }
 
         private void RefreshListBox(IEnumerable<Switch> switches)
@@ -271,7 +283,7 @@ namespace GUI
         private void Search_TextBox_KeyUp(object sender, KeyEventArgs e)
         {
             string searchText = Search_TextBox.Text;
-            using (ClientConnectModelContainer modelContainer = new ClientConnectModelContainer())
+            using (MainModel modelContainer = new MainModel())
             {
                 if (!string.IsNullOrWhiteSpace(searchText))
                     RefreshListBox(modelContainer.SwitchSet.Where(s =>

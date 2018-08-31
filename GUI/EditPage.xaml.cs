@@ -28,7 +28,7 @@ namespace GUI
 
             if (IsNewSwitch) return;
 
-            using (ClientConnectModelContainer modelContainer = new ClientConnectModelContainer())
+            using (MainModel modelContainer = new MainModel())
             {
                 Switch switchToEdit = modelContainer.SwitchSet.Single(x => x.Id == _switchIdToEdit);
                 ManufacturingNumber_Box.Text = _switchIdToEdit.ToString();
@@ -62,10 +62,21 @@ namespace GUI
                 if (allTelnetData != null)
                 {
                     TelnetAddress_Box.Text = allTelnetData.IpAddress;
-                    TelnetUserNameCS_Box.Text = allTelnetData.UserNameCS;
-                    TelnetPassCS_Box.Text = allTelnetData.PasswordCS;
-                    TelnetUserNameSS_Box.Text = allTelnetData.UserNameSS;
-                    TelnetPasswordSS_Box.Text = allTelnetData.PasswordSS;
+                    TelnetUserNameCS_Box.Text = allTelnetData.UsernameCs;
+                    TelnetPassCS_Box.Text = allTelnetData.PasswordCs;
+                    TelnetUserNameSS_Box.Text = allTelnetData.UsernameSs;
+                    TelnetPasswordSS_Box.Text = allTelnetData.PasswordSs;
+                }
+
+                CheckPointVpnConnection checkPointVpnConnection = switchToEdit.CheckPointVpnConnection;
+                if (checkPointVpnConnection != null)
+                {
+                    ClientAddress_Box.Text = checkPointVpnConnection.IpAddress;
+                    SiteName_Box.Text = checkPointVpnConnection.Site;
+                    NetworkUserName_Box.Text = checkPointVpnConnection.Username;
+                    NetworkPass_Box.Text = checkPointVpnConnection.Password;
+                    if (checkPointVpnConnection.Port != null)
+                        NetworkPort_Box.Text = checkPointVpnConnection.Port.ToString();
                 }
 
                 RefreshFilesList();
@@ -92,7 +103,7 @@ namespace GUI
                 return;
             }
 
-            using (ClientConnectModelContainer modelContainer = new ClientConnectModelContainer())
+            using (MainModel modelContainer = new MainModel())
             {
                 try
                 {
@@ -116,52 +127,91 @@ namespace GUI
                     // add the switch if necessary, because all the connections depend on it
                     modelContainer.SaveChanges();
 
-                    PbxConnection pbxEditData = switchToEdit.PbxConnection;
-                    bool newPbxConnection = false;
-                    if (pbxEditData == null)
+                    if (!string.IsNullOrWhiteSpace(PbxPhoneNumber_Box.Text) ||
+                        !string.IsNullOrWhiteSpace(PbxUserName_Box.Text) ||
+                        !string.IsNullOrWhiteSpace(PbxPass_Box.Text) ||
+                        !string.IsNullOrWhiteSpace(PbxDebugPass_Box.Text) ||
+                        !string.IsNullOrWhiteSpace(PbxParDataStop_ComboBox.Text))
                     {
-                        pbxEditData = new PbxConnection();
-                        pbxEditData.SwitchId = switchToEdit.Id;
-                        modelContainer.PbxConnectionSet.Add(pbxEditData);
+                        PbxConnection pbxEditData = switchToEdit.PbxConnection;
+                        bool newPbxConnection = false;
+                        if (pbxEditData == null)
+                        {
+                            pbxEditData = new PbxConnection();
+                            pbxEditData.SwitchId = switchToEdit.Id;
+                            modelContainer.PbxConnectionSet.Add(pbxEditData);
+                        }
+
+                        pbxEditData.DialNum = PbxPhoneNumber_Box.Text;
+                        int parsedBaudRate = 0;
+                        if (int.TryParse(PbxBoudrate_ComboBox.Text, out parsedBaudRate))
+                            pbxEditData.BaudRate = parsedBaudRate;
+                        pbxEditData.LoginName = PbxUserName_Box.Text;
+                        pbxEditData.LoginPassword = PbxPass_Box.Text;
+                        pbxEditData.DebugPassword = PbxDebugPass_Box.Text;
+                        pbxEditData.ParDataStop = PbxParDataStop_ComboBox.Text;
                     }
 
-                    pbxEditData.DialNum = PbxPhoneNumber_Box.Text;
-                    int parsedBaudRate = 0;
-                    if (int.TryParse(PbxBoudrate_ComboBox.Text, out parsedBaudRate))
-                        pbxEditData.BaudRate = parsedBaudRate;
-                    pbxEditData.LoginName = PbxUserName_Box.Text;
-                    pbxEditData.LoginPassword = PbxPass_Box.Text;
-                    pbxEditData.DebugPassword = PbxDebugPass_Box.Text;
-                    pbxEditData.ParDataStop = PbxParDataStop_ComboBox.Text;
-
-                    KolanConnection kolanEditData = switchToEdit.KolanConnection;
-                    if (kolanEditData == null)
+                    if (!string.IsNullOrWhiteSpace(KolanPhoneNumber_Box.Text))
                     {
-                        kolanEditData = new KolanConnection();
-                        kolanEditData.SwitchId = switchToEdit.Id;
-                        modelContainer.KolanConnectionSet.Add(kolanEditData);
+                        KolanConnection kolanEditData = switchToEdit.KolanConnection;
+                        if (kolanEditData == null)
+                        {
+                            kolanEditData = new KolanConnection();
+                            kolanEditData.SwitchId = switchToEdit.Id;
+                            modelContainer.KolanConnectionSet.Add(kolanEditData);
+                        }
+
+                        kolanEditData.DialNum = KolanPhoneNumber_Box.Text;
+                        int parsedKolanBaudRate = 0;
+                        if (int.TryParse(KolanBoudrate_ComboBox.Text, out parsedKolanBaudRate))
+                            kolanEditData.BaudRate = parsedKolanBaudRate;
+                        kolanEditData.ParDataStop = KolanParDataStop_ComboBox.Text;
                     }
 
-                    kolanEditData.DialNum = KolanPhoneNumber_Box.Text;
-                    int parsedKolanBaudRate = 0;
-                    if (int.TryParse(KolanBoudrate_ComboBox.Text, out parsedKolanBaudRate))
-                        kolanEditData.BaudRate = parsedKolanBaudRate;
-                    kolanEditData.ParDataStop = KolanParDataStop_ComboBox.Text;
-
-                    TelnetConnection telnetEditData = switchToEdit.TelnetConnection;
-                    if (telnetEditData == null)
+                    if (!string.IsNullOrWhiteSpace(TelnetAddress_Box.Text) ||
+                        !string.IsNullOrWhiteSpace(TelnetUserNameCS_Box.Text) ||
+                        !string.IsNullOrWhiteSpace(TelnetPassCS_Box.Text) ||
+                        !string.IsNullOrWhiteSpace(TelnetUserNameSS_Box.Text) ||
+                        !string.IsNullOrWhiteSpace(TelnetPasswordSS_Box.Text))
                     {
-                        telnetEditData = new TelnetConnection();
-                        telnetEditData.SwitchId = switchToEdit.Id;
-                        modelContainer.TelnetConnectionSet.Add(telnetEditData);
+                        TelnetConnection telnetEditData = switchToEdit.TelnetConnection;
+                        if (telnetEditData == null)
+                        {
+                            telnetEditData = new TelnetConnection();
+                            telnetEditData.SwitchId = switchToEdit.Id;
+                            modelContainer.TelnetConnectionSet.Add(telnetEditData);
+                        }
+
+                        telnetEditData.IpAddress = TelnetAddress_Box.Text;
+                        telnetEditData.UsernameCs = TelnetUserNameCS_Box.Text;
+                        telnetEditData.PasswordCs = TelnetPassCS_Box.Text;
+                        telnetEditData.UsernameSs = TelnetUserNameSS_Box.Text;
+                        telnetEditData.PasswordSs = TelnetPasswordSS_Box.Text;
                     }
 
-                    telnetEditData.IpAddress = TelnetAddress_Box.Text;
-                    telnetEditData.UserNameCS = TelnetUserNameCS_Box.Text;
-                    telnetEditData.PasswordCS = TelnetPassCS_Box.Text;
-                    telnetEditData.UserNameSS = TelnetUserNameSS_Box.Text;
-                    telnetEditData.PasswordSS = TelnetPasswordSS_Box.Text;
+                    if (!string.IsNullOrWhiteSpace(ClientAddress_Box.Text) ||
+                        !string.IsNullOrWhiteSpace(SiteName_Box.Text) ||
+                        !string.IsNullOrWhiteSpace(NetworkUserName_Box.Text) ||
+                        !string.IsNullOrWhiteSpace(NetworkPass_Box.Text) ||
+                        !string.IsNullOrWhiteSpace(NetworkPort_Box.Text))
+                    {
+                        CheckPointVpnConnection checkPointVpnConnectionEditData = switchToEdit.CheckPointVpnConnection;
+                        if (checkPointVpnConnectionEditData == null)
+                        {
+                            checkPointVpnConnectionEditData = new CheckPointVpnConnection();
+                            checkPointVpnConnectionEditData.SwitchId = switchToEdit.Id;
+                            modelContainer.CheckPointVpnConnectionSet.Add(checkPointVpnConnectionEditData);
+                        }
 
+                        checkPointVpnConnectionEditData.IpAddress = ClientAddress_Box.Text;
+                        checkPointVpnConnectionEditData.Site = SiteName_Box.Text;
+                        checkPointVpnConnectionEditData.Username = NetworkUserName_Box.Text;
+                        checkPointVpnConnectionEditData.Password = NetworkPass_Box.Text;
+                        checkPointVpnConnectionEditData.Port = string.IsNullOrWhiteSpace(NetworkPort_Box.Text)
+                            ? (short?) null
+                            : short.Parse(NetworkPort_Box.Text);
+                    }
 
                     modelContainer.SaveChanges();
                     MessageBox.Show("השינויים נשמרו בהצלחה");
@@ -173,7 +223,8 @@ namespace GUI
                 {
                     string errors = string.Empty;
                     foreach (DbEntityValidationResult validationError in ex.EntityValidationErrors)
-                        errors += validationError + "\n";
+                    foreach (DbValidationError dbValidationError in validationError.ValidationErrors)
+                        errors += dbValidationError + "\n";
                     MessageBox.Show("בעיה בשמירת המתג:\n" + errors);
                 }
                 catch (Exception ex)
@@ -222,7 +273,7 @@ namespace GUI
             newFile.Content = System.IO.File.ReadAllBytes(openFileDialog.FileName);
             string newFileName = new FileInfo(openFileDialog.FileName).Name;
             newFile.Name = newFileName;
-            using (ClientConnectModelContainer modelContainer = new ClientConnectModelContainer())
+            using (MainModel modelContainer = new MainModel())
             {
                 modelContainer.FileSet.Add(newFile);
                 modelContainer.SaveChanges();
@@ -234,11 +285,11 @@ namespace GUI
         private void RefreshFilesList()
         {
             FileListBox.Items.Clear();
-            using (ClientConnectModelContainer modelContainer = new ClientConnectModelContainer())
+            using (MainModel modelContainer = new MainModel())
             {
                 Switch switchToEdit = modelContainer.SwitchSet.Single(x => x.Id == _switchIdToEdit);
 
-                foreach (File file in switchToEdit.File)
+                foreach (File file in switchToEdit.Files)
                 {
                     ListBoxItem item = new ListBoxItem();
                     item.MouseDoubleClick += FileMouseDoubleClick;
@@ -251,7 +302,7 @@ namespace GUI
 
         private void FileMouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
-            using (ClientConnectModelContainer modelContainer = new ClientConnectModelContainer())
+            using (MainModel modelContainer = new MainModel())
             {
                 int selectedFileId = int.Parse(((ListBoxItem) FileListBox.SelectedItems[0]).Tag.ToString());
                 File file = modelContainer.FileSet.Single(x => x.Id == selectedFileId);
@@ -278,7 +329,7 @@ namespace GUI
                 return;
             }
 
-            using (ClientConnectModelContainer modelContainer = new ClientConnectModelContainer())
+            using (MainModel modelContainer = new MainModel())
             {
                 int selectedFileId = int.Parse(((ListBoxItem) FileListBox.SelectedItems[0]).Tag.ToString());
                 File file = modelContainer.FileSet.Single(x => x.Id == selectedFileId);

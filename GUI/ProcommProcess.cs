@@ -10,7 +10,7 @@ namespace GUI
         public static void RunInstance()
         {
             if (bool.Parse(ConfigurationManager.AppSettings["RunProcomm"]))
-                Instance = Process.Start("C:\\Program Files (x86)\\Symantec\\Procomm Plus\\PROGRAMS\\PW5.EXE");
+                Instance = Process.Start(ConfigurationManager.AppSettings["ProcommPath"]);
             else
                 Instance = null;
         }

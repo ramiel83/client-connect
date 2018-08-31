@@ -39,70 +39,21 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Security" />
+    <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AccessLevel.cs" />
-    <Compile Include="ClientConnectModel.Context.cs">
-      <DependentUpon>ClientConnectModel.Context.tt</DependentUpon>
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-    </Compile>
-    <Compile Include="ClientConnectModel.cs">
-      <DependentUpon>ClientConnectModel.tt</DependentUpon>
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-    </Compile>
-    <Compile Include="ClientConnectModel.Designer.cs">
-      <DependentUpon>ClientConnectModel.edmx</DependentUpon>
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-    </Compile>
-    <Compile Include="File.cs">
-      <DependentUpon>ClientConnectModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="KolanConnection.cs">
-      <DependentUpon>ClientConnectModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="PbxConnection.cs">
-      <DependentUpon>ClientConnectModel.tt</DependentUpon>
-    </Compile>
+    <Compile Include="MainModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Switch.cs">
-      <DependentUpon>ClientConnectModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="TelnetConnection.cs">
-      <DependentUpon>ClientConnectModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="User.cs">
-      <DependentUpon>ClientConnectModel.tt</DependentUpon>
-    </Compile>
     <Compile Include="Utilities.cs" />
   </ItemGroup>
   <ItemGroup>
-    <EntityDeploy Include="ClientConnectModel.edmx">
-      <Generator>EntityModelCodeGenerator</Generator>
-      <LastGenOutput>ClientConnectModel.Designer.cs</LastGenOutput>
-    </EntityDeploy>
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="ClientConnectModel.Context.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <DependentUpon>ClientConnectModel.edmx</DependentUpon>
-      <LastGenOutput>ClientConnectModel.Context.cs</LastGenOutput>
-    </Content>
-    <Content Include="ClientConnectModel.edmx.sql" />
-    <Content Include="ClientConnectModel.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <DependentUpon>ClientConnectModel.edmx</DependentUpon>
-      <LastGenOutput>ClientConnectModel.cs</LastGenOutput>
-    </Content>
-  </ItemGroup>
-  <ItemGroup>
     <None Include="App.config" />
-    <None Include="ClientConnectModel.edmx.diagram">
-      <DependentUpon>ClientConnectModel.edmx</DependentUpon>
-    </None>
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>

@@ -16,7 +16,7 @@ namespace GUI
         public UsersManage()
         {
             InitializeComponent();
-            using (ClientConnectModelContainer modelContainer = new ClientConnectModelContainer())
+            using (MainModel modelContainer = new MainModel())
             {
                 RefreshUserListBox(modelContainer.UserSet);
             }
@@ -31,7 +31,7 @@ namespace GUI
         private void UserSearch_TextBox_KeyUp(object sender, KeyEventArgs e)
         {
             string searchText = SearchUsers_TextBox.Text;
-            using (ClientConnectModelContainer modelContainer = new ClientConnectModelContainer())
+            using (MainModel modelContainer = new MainModel())
             {
                 if (!string.IsNullOrWhiteSpace(searchText))
                     RefreshUserListBox(modelContainer.UserSet.Where(s =>
@@ -69,14 +69,14 @@ namespace GUI
                 return;
             }
 
-            using (ClientConnectModelContainer modelContainer = new ClientConnectModelContainer())
+            using (MainModel modelContainer = new MainModel())
             {
                 User userEditSelectedData = modelContainer.UserSet.Single(s =>
                     s.Username == userNameString);
                 if (Password_TextBox1.Password == Password_TextBox2.Password)
                 {
                     userEditSelectedData.PasswordHash = Utilities.Sha256(Password_TextBox1.Password);
-                    userEditSelectedData.AccessLevel = Convert.ToInt32(Enum.Parse(typeof(AccessLevel), ClassLevel_TextBox.Text));                
+                    userEditSelectedData.AccessLevel = (AccessLevel) Enum.Parse(typeof(AccessLevel), ClassLevel_TextBox.Text);                
                 }
                 else
                 {
@@ -103,7 +103,7 @@ namespace GUI
             User newUserData = new User();
             newUserData.Username = AddUserName_TextBox.Text;
             newUserData.PasswordHash = Utilities.Sha256(AddPassword_TextBox1.Password);
-            newUserData.AccessLevel = Convert.ToInt32(Enum.Parse(typeof(AccessLevel),AddClassLevel_TextBox.Text));
+            newUserData.AccessLevel = (AccessLevel) Enum.Parse(typeof(AccessLevel),AddClassLevel_TextBox.Text);
             if (string.IsNullOrWhiteSpace(AddUserName_TextBox.Text) ||
                 string.IsNullOrWhiteSpace(AddPassword_TextBox1.Password) ||
                 string.IsNullOrWhiteSpace(AddPassword_TextBox2.Password)||
@@ -119,7 +119,7 @@ namespace GUI
                 return;
             }
 
-            using (ClientConnectModelContainer modelContainer = new ClientConnectModelContainer())
+            using (MainModel modelContainer = new MainModel())
             {
                 if (modelContainer.UserSet.FirstOrDefault(u => u.Username == newUserData.Username) == null
                     && AddPassword_TextBox1.Password == AddPassword_TextBox2.Password)
@@ -155,7 +155,7 @@ namespace GUI
         {
             {
                 string userNameString = UsersList_ListBox.SelectedItem.ToString();
-                using (ClientConnectModelContainer modelContainer = new ClientConnectModelContainer())
+                using (MainModel modelContainer = new MainModel())
                 {
                     User userSelectedData = modelContainer.UserSet.Single(s =>
                         s.Username == userNameString);
