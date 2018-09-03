@@ -28,7 +28,7 @@ namespace GUI
 
             if (IsNewSwitch) return;
 
-            using (MainModel modelContainer = new MainModel())
+            using (MainModel modelContainer = new MainModel(App.WorkMode))
             {
                 Switch switchToEdit = modelContainer.SwitchSet.Single(x => x.Id == _switchIdToEdit);
                 ManufacturingNumber_Box.Text = _switchIdToEdit.ToString();
@@ -87,7 +87,7 @@ namespace GUI
 
         private void Ok_Click(object sender, RoutedEventArgs e)
         {
-            if (MainWindow.UserAccessLevel > AccessLevel.Manager)
+            if (App.UserAccessLevel > AccessLevel.Manager)
             {
                 MessageBox.Show("אינך מורשה לבצע שינויים בדף זה יש לפנות למנהל המערכת", "בעיה בהרשאות",
                     MessageBoxButton.OK, MessageBoxImage.Error);
@@ -103,7 +103,7 @@ namespace GUI
                 return;
             }
 
-            using (MainModel modelContainer = new MainModel())
+            using (MainModel modelContainer = new MainModel(App.WorkMode))
             {
                 try
                 {
@@ -256,7 +256,7 @@ namespace GUI
 
         private void addFileButton_Click(object sender, RoutedEventArgs e)
         {
-            if (MainWindow.UserAccessLevel > AccessLevel.Manager)
+            if (App.UserAccessLevel > AccessLevel.Manager)
             {
                 MessageBox.Show("אינך מורשה לבצע שינויים בדף זה יש לפנות למנהל המערכת", "בעיה בהרשאות",
                     MessageBoxButton.OK, MessageBoxImage.Error);
@@ -273,7 +273,7 @@ namespace GUI
             newFile.Content = System.IO.File.ReadAllBytes(openFileDialog.FileName);
             string newFileName = new FileInfo(openFileDialog.FileName).Name;
             newFile.Name = newFileName;
-            using (MainModel modelContainer = new MainModel())
+            using (MainModel modelContainer = new MainModel(App.WorkMode))
             {
                 modelContainer.FileSet.Add(newFile);
                 modelContainer.SaveChanges();
@@ -285,7 +285,7 @@ namespace GUI
         private void RefreshFilesList()
         {
             FileListBox.Items.Clear();
-            using (MainModel modelContainer = new MainModel())
+            using (MainModel modelContainer = new MainModel(App.WorkMode))
             {
                 Switch switchToEdit = modelContainer.SwitchSet.Single(x => x.Id == _switchIdToEdit);
 
@@ -302,7 +302,7 @@ namespace GUI
 
         private void FileMouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
-            using (MainModel modelContainer = new MainModel())
+            using (MainModel modelContainer = new MainModel(App.WorkMode))
             {
                 int selectedFileId = int.Parse(((ListBoxItem) FileListBox.SelectedItems[0]).Tag.ToString());
                 File file = modelContainer.FileSet.Single(x => x.Id == selectedFileId);
@@ -316,7 +316,7 @@ namespace GUI
 
         private void deleteFileButton_Click(object sender, RoutedEventArgs e)
         {
-            if (MainWindow.UserAccessLevel > AccessLevel.Manager)
+            if (App.UserAccessLevel > AccessLevel.Manager)
             {
                 MessageBox.Show("אינך מורשה לבצע שינויים בדף זה יש לפנות למנהל המערכת", "בעיה בהרשאות",
                     MessageBoxButton.OK, MessageBoxImage.Error);
@@ -329,7 +329,7 @@ namespace GUI
                 return;
             }
 
-            using (MainModel modelContainer = new MainModel())
+            using (MainModel modelContainer = new MainModel(App.WorkMode))
             {
                 int selectedFileId = int.Parse(((ListBoxItem) FileListBox.SelectedItems[0]).Tag.ToString());
                 File file = modelContainer.FileSet.Single(x => x.Id == selectedFileId);

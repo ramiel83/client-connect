@@ -61,7 +61,5 @@
                 </LinearGradientBrush>
             </Button.Background>
         </Button>
-        <Border BorderBrush="Black" BorderThickness="1" Margin="63,43,63,43" />
-
     </Grid>
 </Page>

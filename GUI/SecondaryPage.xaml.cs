@@ -25,7 +25,7 @@ namespace GUI
         {
             InitializeComponent();
 
-            using (MainModel modelContainer = new MainModel())
+            using (MainModel modelContainer = new MainModel(App.WorkMode))
             {
                 RefreshListBox(modelContainer.SwitchSet);
             }
@@ -73,7 +73,7 @@ namespace GUI
             string[] selectedCustomerArr = selectedCustomer.Split(' ');
             int switchIdSelcted = int.Parse(selectedCustomerArr[0]);
 
-            using (MainModel modelContainer = new MainModel())
+            using (MainModel modelContainer = new MainModel(App.WorkMode))
             {
                 PbxConnection allSwitchIdData = modelContainer.PbxConnectionSet.Single(s =>
                     s.SwitchId == switchIdSelcted);
@@ -157,7 +157,7 @@ namespace GUI
             string[] selectedCustomerArr = selectedCustomer.Split(' ');
             int switchIdSelcted = int.Parse(selectedCustomerArr[0]);
 
-            using (MainModel modelContainer = new MainModel())
+            using (MainModel modelContainer = new MainModel(App.WorkMode))
             {
                 KolanConnection allSwitchIdData = modelContainer.KolanConnectionSet.SingleOrDefault(s =>
                     s.SwitchId == switchIdSelcted);
@@ -212,7 +212,7 @@ namespace GUI
             string callServerPass = null;
             int switchIdSelcted = GetSelctedSwitchId();
 
-            using (MainModel modelContainer = new MainModel())
+            using (MainModel modelContainer = new MainModel(App.WorkMode))
             {
                 TelnetConnection allSwitchIdData = modelContainer.TelnetConnectionSet.Single(s =>
                     s.SwitchId == switchIdSelcted);
@@ -265,7 +265,7 @@ namespace GUI
         private void ConnectClientNetwork_Click(object sender, RoutedEventArgs e)
         {
             int switchIdSelcted = GetSelctedSwitchId();
-            using (MainModel modelContainer = new MainModel())
+            using (MainModel modelContainer = new MainModel(App.WorkMode))
             {
                 CheckPointVpnConnection checkPointVpnConnection =
                     modelContainer.CheckPointVpnConnectionSet.Single(s => s.SwitchId == switchIdSelcted);
@@ -283,7 +283,7 @@ namespace GUI
         private void Search_TextBox_KeyUp(object sender, KeyEventArgs e)
         {
             string searchText = Search_TextBox.Text;
-            using (MainModel modelContainer = new MainModel())
+            using (MainModel modelContainer = new MainModel(App.WorkMode))
             {
                 if (!string.IsNullOrWhiteSpace(searchText))
                     RefreshListBox(modelContainer.SwitchSet.Where(s =>
@@ -296,7 +296,7 @@ namespace GUI
 
         private void AddNew_Client(object sender, RoutedEventArgs e)
         {
-            if (MainWindow.UserAccessLevel > AccessLevel.Manager)
+            if (App.UserAccessLevel > AccessLevel.Manager)
             {
                 MessageBox.Show("אינך מורשה להוסיף לקוח יש לפנות למנהל המערכת");
                 return;

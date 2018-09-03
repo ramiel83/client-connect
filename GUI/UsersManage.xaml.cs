@@ -16,7 +16,7 @@ namespace GUI
         public UsersManage()
         {
             InitializeComponent();
-            using (MainModel modelContainer = new MainModel())
+            using (MainModel modelContainer = new MainModel(App.WorkMode))
             {
                 RefreshUserListBox(modelContainer.UserSet);
             }
@@ -31,7 +31,7 @@ namespace GUI
         private void UserSearch_TextBox_KeyUp(object sender, KeyEventArgs e)
         {
             string searchText = SearchUsers_TextBox.Text;
-            using (MainModel modelContainer = new MainModel())
+            using (MainModel modelContainer = new MainModel(App.WorkMode))
             {
                 if (!string.IsNullOrWhiteSpace(searchText))
                     RefreshUserListBox(modelContainer.UserSet.Where(s =>
@@ -63,13 +63,13 @@ namespace GUI
                 return;
             }
 
-            if (MainWindow.UserAccessLevel > AccessLevel.Administrator)
+            if (App.UserAccessLevel > AccessLevel.Administrator)
             {
                 MessageBox.Show("אינך מורשה לבצע שינויים בדף זה יש לפנות למנהל המערכת");
                 return;
             }
 
-            using (MainModel modelContainer = new MainModel())
+            using (MainModel modelContainer = new MainModel(App.WorkMode))
             {
                 User userEditSelectedData = modelContainer.UserSet.Single(s =>
                     s.Username == userNameString);
@@ -113,13 +113,13 @@ namespace GUI
                 return;
             }
 
-            if (MainWindow.UserAccessLevel > AccessLevel.Administrator)
+            if (App.UserAccessLevel > AccessLevel.Administrator)
             {
                 MessageBox.Show("אינך מורשה לבצע שינויים בדף זה יש לפנות למנהל המערכת");
                 return;
             }
 
-            using (MainModel modelContainer = new MainModel())
+            using (MainModel modelContainer = new MainModel(App.WorkMode))
             {
                 if (modelContainer.UserSet.FirstOrDefault(u => u.Username == newUserData.Username) == null
                     && AddPassword_TextBox1.Password == AddPassword_TextBox2.Password)
@@ -155,7 +155,7 @@ namespace GUI
         {
             {
                 string userNameString = UsersList_ListBox.SelectedItem.ToString();
-                using (MainModel modelContainer = new MainModel())
+                using (MainModel modelContainer = new MainModel(App.WorkMode))
                 {
                     User userSelectedData = modelContainer.UserSet.Single(s =>
                         s.Username == userNameString);

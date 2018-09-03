@@ -32,7 +32,7 @@ namespace DataTransfer
                     sw.MachineType =
                         GetMachineTypeComment(reader.GetString(reader.GetOrdinal("Machine")), accessConnection);
                     int? customerId = reader["CustomerID"] as int?;
-                    using (MainModel modelContainer = new MainModel())
+                    using (MainModel modelContainer = new MainModel(WorkMode.Main))
                     {
                         modelContainer.SwitchSet.Add(sw);
                         modelContainer.SaveChanges();
@@ -55,7 +55,7 @@ namespace DataTransfer
                                 accessConnection);
                             pbxConnection.ParDataStop = GetParDataStop(reader.GetString(reader.GetOrdinal("Parity")),
                                 accessConnection);
-                            using (MainModel modelContainer = new MainModel())
+                            using (MainModel modelContainer = new MainModel(WorkMode.Main))
                             {
                                 modelContainer.PbxConnectionSet.Add(pbxConnection);
                                 modelContainer.SaveChanges();
@@ -87,7 +87,7 @@ namespace DataTransfer
                         kolanConnection.ParDataStop = GetParDataStop(
                             reader.GetString(reader.GetOrdinal("Parity")),
                             accessConnection);
-                        using (MainModel modelContainer = new MainModel())
+                        using (MainModel modelContainer = new MainModel(WorkMode.Main))
                         {
                             modelContainer.KolanConnectionSet.Add(kolanConnection);
                             modelContainer.SaveChanges();
@@ -112,7 +112,7 @@ namespace DataTransfer
                     user.Username = reader.GetString(reader.GetOrdinal("Level"));
                     user.PasswordHash = Utilities.Sha256(reader.GetString(reader.GetOrdinal("Password")));
                     user.AccessLevel = MapAccessLevel(reader.GetInt16(reader.GetOrdinal("UserLev")));
-                    using (MainModel modelContainer = new MainModel())
+                    using (MainModel modelContainer = new MainModel(WorkMode.Main))
                     {
                         modelContainer.UserSet.Add(user);
                         modelContainer.SaveChanges();

@@ -1,5 +1,6 @@
 ﻿using System.Linq;
 using System.Windows;
+using System.Windows.Controls;
 using Database;
 
 namespace GUI
@@ -14,11 +15,11 @@ namespace GUI
             InitializeComponent();
         }
 
-        public static AccessLevel UserAccessLevel { get; private set; }
-
         private void login_Click(object sender, RoutedEventArgs e)
         {
-            using (MainModel modelContainer = new MainModel())
+            App.WorkMode = (WorkMode) ((ComboBoxItem)WorkModeBox.SelectedItem).Tag;
+
+            using (MainModel modelContainer = new MainModel(App.WorkMode))
             {
                 string username = UserName_Box.Text;
                 string passwordHash = Utilities.Sha256(Password_Box.Password);
@@ -27,7 +28,7 @@ namespace GUI
                     u.Username == username && u.PasswordHash == passwordHash);
                 if (user != null)
                 {
-                    UserAccessLevel = (AccessLevel) user.AccessLevel;
+                    App.UserAccessLevel = user.AccessLevel;
                     SecondaryPage sp = new SecondaryPage();
                     Content = sp;
                 }

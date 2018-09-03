@@ -1,4 +1,5 @@
 ﻿using System.Windows;
+using Database;
 
 namespace GUI
 {
@@ -7,6 +8,9 @@ namespace GUI
     /// </summary>
     public partial class App : Application
     {
+        public static WorkMode WorkMode { get; set; }
+        public static AccessLevel UserAccessLevel { get; set; }
+
         public App()
         {
             ProcommProcess.RunInstance();
