@@ -1,13 +1,15 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.23107.0
+# Visual Studio 15
+VisualStudioVersion = 15.0.28010.2016
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataTransfer", "DataTransfer\DataTransfer.csproj", "{ED818881-6904-4D0C-A5FD-42DA06A5F666}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GUI", "GUI\GUI.csproj", "{FA277163-661D-48D1-9DE3-5CF998539114}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Database", "Database\Database.csproj", "{C3CA96E3-04ED-4ED6-81A3-1A4246B3E2E6}"
+EndProject
+Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "GUI.Setup", "GUI.Setup\GUI.Setup.vdproj", "{667F88DA-89FD-4517-ADDB-FEB57690980C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -27,8 +29,13 @@ Global
 		{C3CA96E3-04ED-4ED6-81A3-1A4246B3E2E6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C3CA96E3-04ED-4ED6-81A3-1A4246B3E2E6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C3CA96E3-04ED-4ED6-81A3-1A4246B3E2E6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{667F88DA-89FD-4517-ADDB-FEB57690980C}.Debug|Any CPU.ActiveCfg = Debug
+		{667F88DA-89FD-4517-ADDB-FEB57690980C}.Release|Any CPU.ActiveCfg = Release
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {C265612B-324C-4E2B-BB53-9459F89987F9}
 	EndGlobalSection
 EndGlobal
