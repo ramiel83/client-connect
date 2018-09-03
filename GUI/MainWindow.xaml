@@ -9,7 +9,13 @@
         Title="מערכת ניהול התחברויות למרכזיות נורטל" Height="450" Width="630" FlowDirection="RightToLeft"
         Background="White">
     <Grid Width="622" Height="419">
-        <Button x:Name="Login_Button" Content="כניסה" Margin="368,316,124,59" FontSize="16" FontFamily="Segoe UI Black"
+        <Grid.Background>
+            <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                <GradientStop Color="Black" Offset="0" />
+                <GradientStop Color="White" Offset="1" />
+            </LinearGradientBrush>
+        </Grid.Background>
+        <Button x:Name="Login_Button" Content="כניסה" Margin="246,318,246,57" FontSize="16" FontFamily="Segoe UI Black"
                 Click="login_Click" Height="44" IsDefault="True" />
         <Label x:Name="UserName_Label" Content="שם משתמש" Margin="141,82,374,303" RenderTransformOrigin="-6.263,-0.115"
                FontSize="14" FontFamily="Segoe UI Black" />
@@ -21,7 +27,7 @@
         <Label x:Name="WorkModeLabel" Content="מצב עבודה" HorizontalAlignment="Left" Margin="141,223,0,162"
                RenderTransformOrigin="-7.671,-1.327" Width="107" Height="34" FontSize="14" FontFamily="Segoe UI Black" />
         <ComboBox x:Name="WorkModeBox" HorizontalAlignment="Left" Margin="141,257,0,0" VerticalAlignment="Top"
-                  Width="120">
+                  Width="235" Height="35">
             <ComboBoxItem Content="ברשת" Tag="{x:Static database:WorkMode.Main}" IsSelected="True" />
             <ComboBoxItem Content="מקומי" Tag="{x:Static database:WorkMode.Local}" />
         </ComboBox>

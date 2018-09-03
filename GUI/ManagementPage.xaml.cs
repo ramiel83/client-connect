@@ -40,6 +40,7 @@ namespace GUI
                 localModel.UserSet.RemoveRange(localModel.UserSet);
                 localModel.SaveChanges();
 
+                // add new data
                 localModel.SwitchSet.AddRange(remoteModel.SwitchSet.AsNoTracking());
                 localModel.PbxConnectionSet.AddRange(remoteModel.PbxConnectionSet.AsNoTracking());
                 localModel.KolanConnectionSet.AddRange(remoteModel.KolanConnectionSet.AsNoTracking());

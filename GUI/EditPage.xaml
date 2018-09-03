@@ -134,7 +134,7 @@
         <Label x:Name="Comments_Label" Content="הערות" HorizontalAlignment="Left" Margin="475,222,0,0"
                VerticalAlignment="Top" FontFamily="Segoe UI Black" />
 
-        <TextBox x:Name="Comments_Box" Margin="409,248,13,37" TextWrapping="Wrap" />
+        <TextBox x:Name="Comments_Box" Margin="409,248,13,34" TextWrapping="Wrap" Height="Auto" />
         <Label x:Name="PbxParDataStop_Label" Content="par-data-stop" Margin="114,132,402,0" VerticalAlignment="Top" />
         <Label x:Name="NetworkDetails_Label" Content="פרטי חיבור לרשת " Margin="248,64,243,0" VerticalAlignment="Top"
                FontFamily="Segoe UI Black" />

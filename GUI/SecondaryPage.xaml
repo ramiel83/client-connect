@@ -16,17 +16,11 @@
             </LinearGradientBrush>
         </Grid.Background>
         <Label x:Name="Search_Label" Content="חיפוש" HorizontalAlignment="Left" Margin="10,3,0,371"
-               RenderTransformOrigin="0.629,1.512" Width="52" FontFamily="Segoe UI Black" FontSize="14">
-            <Label.Background>
-                <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
-                    <GradientStop Color="Black" Offset="0" />
-                    <GradientStop Color="White" Offset="1" />
-                </LinearGradientBrush>
-            </Label.Background>
+               RenderTransformOrigin="0.629,1.512" Width="52" FontFamily="Segoe UI Black" FontSize="14" Foreground="White">
         </Label>
         <ListBox x:Name="CustomerList_Box" Margin="10,58,300,62" />
-        <Button x:Name="DailPbx_Button" Content="חיוג למרכזייה" Margin="462,86,26,264" Click="DialPbx_Click"
-                FontSize="14" FontFamily="Segoe UI Black">
+        <Button x:Name="DailPbx_Button" Content="חיוג למרכזייה" Margin="462,100,26,250" Click="DialPbx_Click"
+                FontSize="14" FontFamily="Segoe UI Black" Height="50">
             <Button.Background>
                 <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
                     <GradientStop Color="Black" Offset="0" />
@@ -40,8 +34,8 @@
                 </LinearGradientBrush>
             </Button.BorderBrush>
         </Button>
-        <Button x:Name="DailKolan_Button" Content="חיוג לקולן" Margin="325,86,163,264" Click="DialKolan_Click"
-                FontSize="14" FontFamily="Segoe UI Black">
+        <Button x:Name="DailKolan_Button" Content="חיוג לקולן" Margin="325,100,163,249" Click="DialKolan_Click"
+                FontSize="14" FontFamily="Segoe UI Black" Height="50">
             <Button.Background>
                 <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
                     <GradientStop Color="Black" Offset="0" />
@@ -73,7 +67,7 @@
                 </LinearGradientBrush>
             </Button.BorderBrush>
         </Button>
-        <Button x:Name="Edit_Button" Content="עריכה" Margin="462,279,26,71" Height="50" FontSize="14"
+        <Button x:Name="Edit_Button" Content="עריכה" Margin="462,270,26,80" Height="50" FontSize="14"
                 FontFamily="Segoe UI Black" Click="Edit_Click">
             <Button.Background>
                 <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
@@ -82,8 +76,8 @@
                 </LinearGradientBrush>
             </Button.Background>
         </Button>
-        <Button x:Name="Management_Button" Content="ניהול" Margin="325,280,163,71" FontSize="14"
-                FontFamily="Segoe UI Black" Click="Management_Click" RenderTransformOrigin="0.565,0.08">
+        <Button x:Name="Management_Button" Content="ניהול" Margin="325,270,163,80" FontSize="14"
+                FontFamily="Segoe UI Black" Click="Management_Click" RenderTransformOrigin="0.565,0.08" Height="50">
             <Button.Background>
                 <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
                     <GradientStop Color="Black" Offset="0" />

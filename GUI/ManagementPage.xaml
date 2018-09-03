@@ -15,8 +15,8 @@
                 <GradientStop Color="White" Offset="1" />
             </LinearGradientBrush>
         </Grid.Background>
-        <Button x:Name="SynchronizeDataBase_Button" Content="סנכרון בסיס הנתונים ממול הראשי" Margin="189,84,190,266"
-                FontFamily="Segoe UI Black" FontSize="14" Click="synchronizeDataBase_Click">
+        <Button x:Name="SynchronizeDataBase_Button" Content="סנכרון מול ראשי" Margin="187,50,222,300"
+                FontFamily="Segoe UI Black" FontSize="14" Click="synchronizeDataBase_Click" Height="Auto">
             <Button.BorderBrush>
                 <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
                     <GradientStop Color="Black" Offset="0" />
@@ -30,9 +30,8 @@
                 </LinearGradientBrush>
             </Button.Background>
         </Button>
-        <Button x:Name="ManageUsers_Button" Content="ניהול משתמשים" Margin="244,174,245
-                ,176"
-                FontFamily="Segoe UI Black" FontSize="14" Height="50" Click="UsersMange_Click">
+        <Button x:Name="ManageUsers_Button" Content="ניהול משתמשים" Margin="187,147,222,203"
+                FontFamily="Segoe UI Black" FontSize="14" Height="Auto" Click="UsersMange_Click">
             <Button.BorderBrush>
                 <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
                     <GradientStop Color="Black" Offset="0" />
@@ -46,8 +45,8 @@
                 </LinearGradientBrush>
             </Button.Background>
         </Button>
-        <Button x:Name="Back_Button" Content="חזור" Margin="244,266,245,84" FontSize="14" FontFamily="Segoe UI Black"
-                Height="50" Click="back_Click">
+        <Button x:Name="Back_Button" Content="חזור" Margin="187,249,222,101" FontSize="14" FontFamily="Segoe UI Black"
+                Height="Auto" Click="back_Click">
             <Button.BorderBrush>
                 <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
                     <GradientStop Color="Black" Offset="0" />
